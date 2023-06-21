@@ -1,3 +1,5 @@
+------------------------------------------------------
+--Parte Soccial/community
 CREATE TABLE UTENTE (
     Username VARCHAR2(20) PRIMARY KEY,
     Email VARCHAR2(30) UNIQUE NOT NULL,
@@ -64,7 +66,9 @@ CREATE TABLE LISTA_DESIDERI (
     CONSTRAINT PK_List_Owner FOREIGN KEY (Username) REFERENCES UTENTE(Username) ON DELETE CASCADE,
     CONSTRAINT FK_Game_Name FOREIGN KEY (Nome_Gioco) REFERENCES GIOCO(Nome_Gioco) ON DELETE CASCADE,
 );
-
+---------------------------------------------------------------
+--Parte Giochi
+---------------------------------------------------------------
 CREATE TABLE GIOCO{
     NOME_GIOCO VARCHAR(50),
     DATA_RILASCIO DATE NOT NULL,
