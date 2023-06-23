@@ -1,5 +1,5 @@
 -- UTENTE
-INSERT INTO UTENTE (Username, Email, Data_Iscrizione) VALUES 
+INSERT INTO UTENTE (USERNAME, EMAIL, DATA_ISCRIZIONE) VALUES 
     ('Alice123', 'alice@outlook.com', TO_DATE('10-03-2022', 'DD-MM-YYYY')), --post
     ('Bob456', 'bob@outlook.com', TO_DATE('15-09-2021', 'DD-MM-YYYY')), --post
     ('Charlie789', 'charlie@outlook.com', TO_DATE('05-01-2023', 'DD-MM-YYYY')), --post
@@ -24,7 +24,7 @@ INSERT INTO UTENTE (Username, Email, Data_Iscrizione) VALUES
     ('Michael321', 'michael@outlook.com', TO_DATE('05-06-2021', 'DD-MM-YYYY')); --post
 
 -- COMMUNITY
-INSERT INTO COMMUNITY (Nome_Community, Nome_Creatore, Data_Creazione) VALUES 
+INSERT INTO COMMUNITY (NOME_COMMUNITY, USERNAME, DATA_CREAZIONE) VALUES 
     ('Battlefield 2042', 'David321', TO_DATE('06-10-2021', 'DD-MM-YYYY')),
     ('Overclocking', 'Henry567', TO_DATE('10-02-2013', 'DD-MM-YYYY')),
     ('PC Masterrace', 'Isabella890', TO_DATE('18-01-2016', 'DD-MM-YYYY')),
@@ -36,7 +36,7 @@ INSERT INTO COMMUNITY (Nome_Community, Nome_Creatore, Data_Creazione) VALUES
 
 
 -- POST
-INSERT INTO POST (Nome_Community, Codice_Post, Titolo_Post, Creatore_Post, Data_Pubblicazione) 
+INSERT INTO POST (NOME_COMMUNITY, CODICE_POST, TITOLO_POST, USERNAME, DATA_PUBBLICAZIONE) 
 VALUES
     ('Linux Gaming', '0000001', 'Just bought Nvidia RTX 3060 (12GB). Here''s how it fares on Linux...', 'Nathan654', TO_DATE('01-01-2012', 'DD-MM-YYYY')),
     ('Linux Gaming', '0000002', 'Diablo IV Black Screen', 'Leo789', TO_DATE('02-01-2013', 'DD-MM-YYYY')),
@@ -58,7 +58,7 @@ VALUES
     ('PC Masterrace', '0000002', '7700x 6800xt Build', 'Michael1321', TO_DATE('04-06-2017', 'DD-MM-YYYY'));
 
 --GRUPPO
-INSERT INTO GRUPPO (Nome_Gruppo, Proprietario_Gruppo, Data_Creazione)
+INSERT INTO GRUPPO (NOME_GRUPPO, USERNAME, DATA_CREAZIONE)
 VALUES 
     ('SilverArrows', 'Linda789', TO_DATE('01-06-2023', 'DD-MM-YYYY')),
     ('CrimsonRiders', 'Emma123', TO_DATE('20-05-2023', 'DD-MM-YYYY')),
@@ -70,7 +70,7 @@ VALUES
     ('EtherealEssence', 'Karen456', TO_DATE('29-11-2023', 'DD-MM-YYYY'));
 
 --AMICO_DI
-INSERT INTO E_AMICO_DI (Username_1, Username_2, Data_Inizio) 
+INSERT INTO E_AMICO_DI (USERNAME_1, USERNAME_2, DATA_INIZIO) 
 VALUES
     ('Alice123', 'Bob456', TO_DATE('01-07-2022', 'DD-MM-YYYY')),
     ('Alice123', 'Charlie789', TO_DATE('02-09-2023', 'DD-MM-YYYY')),
@@ -84,7 +84,7 @@ VALUES
     ('Henry567', 'Mia321', TO_DATE('10-01-2019', 'DD-MM-YYYY'));
 
 --SEGUE
-INSERT INTO SEGUE (Username, Nome_Community, Data_Iscrizione)
+INSERT INTO SEGUE (USERNAME, NOME_COMMUNITY, DATA_ISCRIZIONE)
 VALUES 
 --Proprietari della community
     ('David321', 'Battlefield 2042', TO_DATE('06-10-2021', 'DD-MM-YYYY')),
@@ -114,7 +114,7 @@ VALUES
 
 
 --FA_PARTE
-INSERT INTO FA_PARTE (Username, Nome_Gruppo, Data_Adesione)
+INSERT INTO FA_PARTE (USERNAME, NOME_GRUPPO, DATA_ADESIONE)
 VALUES
 --Proprietari Gruppo
    ('Linda789', 'SilverArrows', TO_DATE('01-06-2023', 'DD-MM-YYYY')),
@@ -141,32 +141,30 @@ VALUES
    ('Linda789', 'CrimsonRiders', TO_DATE('19-03-2023', 'DD-MM-YYYY')),
    ('Michael321', 'CrimsonRiders', TO_DATE('15-05-2023', 'DD-MM-YYYY'));
 
-INSERT INTO LISTA_DESIDERI (Username, Nome_Gioco, Data_Inserimento)
+INSERT INTO LISTA_DESIDERI (USERNAME, CODICE_LISTA, NOME_GIOCO, DATA_INSERIMENTO)
 VALUES
-    ('Alice123', 'OVERWATCH 2', TO_DATE('15-04-2022', 'DD-MM-YYYY')),
-    ('Bob456', 'YAKUZA', TO_DATE('23-10-2022', 'DD-MM-YYYY')),
-    ('Charlie789', 'STARDEW VALLEY', TO_DATE('05-02-2023', 'DD-MM-YYYY')),
-    ('David321', 'ANTHEM', TO_DATE('18-06-2015', 'DD-MM-YYYY')),
-    ('Eva654', 'THE WITCHER 3', TO_DATE('16-10-2023', 'DD-MM-YYYY')),
-    ('Frank987', 'MINECRAFT', TO_DATE('01-01-2023', 'DD-MM-YYYY')),
-    ('Grace234', 'RED DEAD REDEMPTION', TO_DATE('30-12-2021', 'DD-MM-YYYY')),
-    ('Henry567', 'IRON HARVEST', TO_DATE('12-06-2011', 'DD-MM-YYYY')),
-    ('Isabella890', 'HORIZON ZERO DAWN', TO_DATE('07-03-2016', 'DD-MM-YYYY')),
-    ('Jack123', 'HOUSE FLIPPER', TO_DATE('11-08-2010', 'DD-MM-YYYY')),
-    ('Jack123', 'BORDERLANDS', TO_DATE('29-07-2010', 'DD-MM-YYYY')),
-    ('Karen456', 'THE LEGEND OF ZELDA', TO_DATE('30-02-2023', 'DD-MM-YYYY')),
-    ('Leo789', 'UNCHARTED', TO_DATE('18-11-2022', 'DD-MM-YYYY')),
-    ('Mia321', 'CALL OF DUTY', TO_DATE('27-05-2017', 'DD-MM-YYYY')),
-    ('Nathan654', 'BIOSHOCK', TO_DATE('09-12-2022', 'DD-MM-YYYY')),
-    ('Nathan654', 'OVERWATCH 2', TO_DATE('14-11-2022', 'DD-MM-YYYY')),
-    ('Olivia987', 'YAKUZA', TO_DATE('23-10-2015', 'DD-MM-YYYY')),
-    ('Peter123', 'STARDEW VALLEY', TO_DATE('02-01-2021', 'DD-MM-YYYY')),
-    ('Sarah456', 'ANTHEM', TO_DATE('22-04-2015', 'DD-MM-YYYY')),
-    ('Tom789', 'THE WITCHER 3', TO_DATE('13-03-2019', 'DD-MM-YYYY')),
-    ('Tom789', 'CALL OF DUTY', TO_DATE('07-02-2019', 'DD-MM-YYYY')),
-    ('Emma123', 'UNCHARTED', TO_DATE('16-04-2021', 'DD-MM-YYYY')),
-    ('John456', 'THE LEGEND OF ZELDA', TO_DATE('17-06-2018', 'DD-MM-YYYY')),
-    ('Linda789', 'BORDERLANDS', TO_DATE('22-11-2022', 'DD-MM-YYYY')),
-    ('Michael321', 'HORIZON ZERO DAWN', TO_DATE('05-09-2021', 'DD-MM-YYYY'));
-
-...
+    ('Alice123', 32798, 'OVERWATCH 2', TO_DATE('15-04-2022', 'DD-MM-YYYY')),
+    ('Bob456', 60942, 'YAKUZA', TO_DATE('23-10-2022', 'DD-MM-YYYY')),
+    ('Charlie789', 17586, 'STARDEW VALLEY', TO_DATE('05-02-2023', 'DD-MM-YYYY')),
+    ('David321', 76234, 'ANTHEM', TO_DATE('18-06-2015', 'DD-MM-YYYY')),
+    ('Eva654', 41908, 'THE WITCHER 3', TO_DATE('16-10-2023', 'DD-MM-YYYY')),
+    ('Frank987', 58391, 'MINECRAFT', TO_DATE('01-01-2023', 'DD-MM-YYYY')),
+    ('Grace234', 23716, 'RED DEAD REDEMPTION', TO_DATE('30-12-2021', 'DD-MM-YYYY')),
+    ('Henry567', 69457, 'IRON HARVEST', TO_DATE('12-06-2011', 'DD-MM-YYYY')),
+    ('Isabella890', 81029, 'HORIZON ZERO DAWN', TO_DATE('07-03-2016', 'DD-MM-YYYY')),
+    ('Jack123', 50173, 'HOUSE FLIPPER', TO_DATE('11-08-2010', 'DD-MM-YYYY')),
+    ('Jack123', 50173, 'BORDERLANDS', TO_DATE('29-07-2010', 'DD-MM-YYYY')),
+    ('Karen456', 14583, 'THE LEGEND OF ZELDA', TO_DATE('30-02-2023', 'DD-MM-YYYY')),
+    ('Leo789', 32694, 'UNCHARTED', TO_DATE('18-11-2022', 'DD-MM-YYYY')),
+    ('Mia321', 70815, 'CALL OF DUTY', TO_DATE('27-05-2017', 'DD-MM-YYYY')),
+    ('Nathan654', 86429, 'BIOSHOCK', TO_DATE('09-12-2022', 'DD-MM-YYYY')),
+    ('Nathan654', 86429, 'OVERWATCH 2', TO_DATE('14-11-2022', 'DD-MM-YYYY')),
+    ('Olivia987', 49237, 'YAKUZA', TO_DATE('23-10-2015', 'DD-MM-YYYY')),
+    ('Peter123', 41908, 'STARDEW VALLEY', TO_DATE('02-01-2021', 'DD-MM-YYYY')),
+    ('Sarah456', 23716, 'ANTHEM', TO_DATE('22-04-2015', 'DD-MM-YYYY')),
+    ('Tom789', 94215, 'THE WITCHER 3', TO_DATE('13-03-2019', 'DD-MM-YYYY')),
+    ('Tom789', 94215, 'CALL OF DUTY', TO_DATE('07-02-2019', 'DD-MM-YYYY')),
+    ('Emma123', 94215, 'UNCHARTED', TO_DATE('16-04-2021', 'DD-MM-YYYY')),
+    ('John456', 14583, 'THE LEGEND OF ZELDA', TO_DATE('17-06-2018', 'DD-MM-YYYY')),
+    ('Linda789', 23716, 'BORDERLANDS', TO_DATE('22-11-2022', 'DD-MM-YYYY')),
+    ('Michael321', 41908, 'HORIZON ZERO DAWN', TO_DATE('05-09-2021', 'DD-MM-YYYY'));
