@@ -88,7 +88,7 @@ INSERT INTO SEGUE (USERNAME, NOME_COMMUNITY, DATA_ISCRIZIONE)
 VALUES 
 --Proprietari della community
     ('David321', 'Battlefield 2042', TO_DATE('06-10-2021', 'DD-MM-YYYY')),
-    ('Henry567', 'Overclocking', TO_DATE('10-02-2013', 'DD-MM-YYYY'))
+    ('Henry567', 'Overclocking', TO_DATE('10-02-2013', 'DD-MM-YYYY')), -- Aggiunta virgola qui
     ('Isabella890', 'PC Masterrace', TO_DATE('18-01-2016', 'DD-MM-YYYY')),
     ('Jack123', 'Nvidia', TO_DATE('07-07-2010', 'DD-MM-YYYY')),
     ('Jack123', 'Linux Gaming', TO_DATE('06-10-2011', 'DD-MM-YYYY')),
@@ -106,12 +106,10 @@ VALUES
     ('Leo789', 'PC Masterrace', TO_DATE('01-04-2023', 'DD-MM-YYYY')),
     ('Mia321', 'Battlefield 2042', TO_DATE('27-05-2018', 'DD-MM-YYYY')),
     ('Nathan654', 'Overclocking', TO_DATE('03-07-2022', 'DD-MM-YYYY')),
-    ('Olivia987', 'Italy Informatica', TO_DATE('09-03-2014', 'DD-MM-YYYY')),),
+    ('Olivia987', 'Italy Informatica', TO_DATE('09-03-2014', 'DD-MM-YYYY')), -- Rimossa virgola extra
     ('John456', 'Overclocking', TO_DATE('24-04-2019', 'DD-MM-YYYY')),
     ('Linda789', 'Battlefield 2042', TO_DATE('19-03-2023', 'DD-MM-YYYY')),
     ('Michael321', 'Italy Informatica', TO_DATE('15-05-2022', 'DD-MM-YYYY'));
-
-
 
 --FA_PARTE
 INSERT INTO FA_PARTE (USERNAME, NOME_GRUPPO, DATA_ADESIONE)
