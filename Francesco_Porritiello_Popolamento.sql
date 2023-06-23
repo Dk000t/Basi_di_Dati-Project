@@ -1,19 +1,19 @@
 -- UTENTE
 INSERT INTO UTENTE (USERNAME, EMAIL, DATA_ISCRIZIONE) VALUES 
-    ('Alice123', 'alice@outlook.com', TO_DATE('10-03-2022', 'DD-MM-YYYY')), --post
-    ('Bob456', 'bob@outlook.com', TO_DATE('15-09-2021', 'DD-MM-YYYY')), --post
-    ('Charlie789', 'charlie@outlook.com', TO_DATE('05-01-2023', 'DD-MM-YYYY')), --post
-    ('David321', 'david@outlook.com', TO_DATE('12-04-2015', 'DD-MM-YYYY')), --COMMUNITY --gruppo 
-    ('Eva654', 'eva@outlook.com', TO_DATE('02-05-2023', 'DD-MM-YYYY')), --post
-    ('Frank987', 'frank@outlook.com', TO_DATE('18-07-2022', 'DD-MM-YYYY')), --post
-    ('Grace234', 'grace@outlook.com', TO_DATE('29-12-2021', 'DD-MM-YYYY')), --post
-    ('Henry567', 'henry@outlook.com', TO_DATE('15-04-2010', 'DD-MM-YYYY')), --COMMUNITY
-    ('Isabella890', 'isabella@outlook.com', TO_DATE('15-01-2016', 'DD-MM-YYYY')),--COMMUNITY
-    ('Jack123', 'jack@outlook.com', TO_DATE('05-07-2010', 'DD-MM-YYYY')), --COMMUNITY X2 --gruppo
-    ('Karen456', 'karen@outlook.com', TO_DATE('10-02-2023', 'DD-MM-YYYY')), --post --gruppo
-    ('Leo789', 'leo@outlook.com', TO_DATE('15-10-2022', 'DD-MM-YYYY')), --post
-    ('Mia321', 'mia@outlook.com', TO_DATE('20-04-2017', 'DD-MM-YYYY')), --COMMUNITY
-    ('Nathan654', 'nathan@outlook.com', TO_DATE('02-06-2022', 'DD-MM-YYYY')), --post x2
+    ('Alice123', 'GENNAROSAVASTANO@GMAIL.COM', TO_DATE('10-03-2022', 'DD-MM-YYYY')), --post
+    ('Bob456', 'CIROIMMORTALE@GMAIL.COM', TO_DATE('15-09-2021', 'DD-MM-YYYY')), --post
+    ('Charlie789', 'SICKONOSICKO@GMAIL.COM', TO_DATE('05-01-2023', 'DD-MM-YYYY')), --post
+    ('David321', 'TOTOREBECUNUS@GMAIL.COM', TO_DATE('12-04-2015', 'DD-MM-YYYY')), --COMMUNITY --gruppo 
+    ('Eva654', 'SIMONEMONSTER@GMAIL.COM', TO_DATE('02-05-2023', 'DD-MM-YYYY')), --post
+    ('Frank987', 'FRANCESCOALTO@GMAIL.COM', TO_DATE('18-07-2022', 'DD-MM-YYYY')), --post
+    ('Grace234', 'GIGIDALESSIO@ALICE.COM', TO_DATE('29-12-2021', 'DD-MM-YYYY')), --post
+    ('Henry567', 'FORZANAPOLI@GMAIL.COM', TO_DATE('15-04-2010', 'DD-MM-YYYY')), --COMMUNITY
+    ('Isabella890', 'CICCIOCORNETTO@GMAIL.COM', TO_DATE('15-01-2016', 'DD-MM-YYYY')),--COMMUNITY
+    ('Jack123', 'PIZZAMANDOLINO@GMAIL.COM', TO_DATE('05-07-2010', 'DD-MM-YYYY')), --COMMUNITY X2 --gruppo
+    ('Karen456', 'ANNAREGIGI@GMAIL.COM', TO_DATE('10-02-2023', 'DD-MM-YYYY')), --post --gruppo
+    ('Leo789', 'POPCORNEPATATIN@ALICE.COM', TO_DATE('15-10-2022', 'DD-MM-YYYY')), --post
+    ('Mia321', 'ASTORIJEMARIJ@GMAIL.COM', TO_DATE('20-04-2017', 'DD-MM-YYYY')), --COMMUNITY
+    ('Nathan654', 'CARMINEBELLO@GMAIL.COM', TO_DATE('02-06-2022', 'DD-MM-YYYY')), --post x2
     ('Olivia987', 'olivia@outlook.com', TO_DATE('18-12-2013', 'DD-MM-YYYY')), --COMMUNITY
     ('Peter123', 'peter@outlook.com', TO_DATE('07-08-2020', 'DD-MM-YYYY')), --gruppo
     ('Sarah456', 'sarah@outlook.com', TO_DATE('25-11-2013', 'DD-MM-YYYY')), --gruppo
