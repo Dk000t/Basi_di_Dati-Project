@@ -72,6 +72,70 @@ BEGIN
 
     -- Controlla se la data di amicizia è successiva o uguale alle date di iscrizione
     IF :NEW.DATA_INIZIO < v_data_iscrizione_1 OR :NEW.DATA_INIZIO < v_data_iscrizione_2 THEN
-        RAISE_APPLICATION_ERROR(-20001, 'La data di inizio amicizia deve essere successiva o uguale alle date di iscrizione degli utenti.');
+        RAISE_APPLICATION_ERROR(-20004, 'La data di inizio amicizia deve essere successiva o uguale alle date di iscrizione degli utenti.');
     END IF;
 END;
+
+--Controllo ...data ...
+CREATE OR REPLACE TRIGGER CHECK_DATA_SEGUE
+BEFORE INSERT ON SEGUE
+FOR EACH ROW
+DECLARE
+    v_data_iscrizione DATE;
+BEGIN
+    -- Recupera la data di iscrizione dell'utente corrispondente
+    SELECT DATA_ISCRIZIONE INTO v_data_iscrizione
+    FROM UTENTE
+    WHERE USERNAME = :NEW.USERNAME;
+
+    -- Controlla se la data di segue è successiva o uguale alla data di iscrizione
+    IF :NEW.DATA_ISCRIZIONE < v_data_iscrizione THEN
+        RAISE_APPLICATION_ERROR(-20005, 'La data di segue deve essere successiva o uguale alla data di iscrizione dell''utente.');
+    END IF;
+END;
+
+--Controllo ... data ...
+CREATE OR REPLACE TRIGGER CHECK_DATA_ADESIONE
+BEFORE INSERT ON FA_PARTE
+FOR EACH ROW
+DECLARE
+    v_data_iscrizione DATE;
+BEGIN
+    -- Recupera la data di iscrizione dell'utente corrispondente
+    SELECT DATA_ISCRIZIONE INTO v_data_iscrizione
+    FROM UTENTE
+    WHERE USERNAME = :NEW.USERNAME;
+
+    -- Controlla se la data di adesione è successiva o uguale alla data di iscrizione
+    IF :NEW.DATA_ADESIONE < v_data_iscrizione THEN
+        RAISE_APPLICATION_ERROR(-20006, 'La data di adesione deve essere successiva o uguale alla data di iscrizione dell''utente.');
+    END IF;
+END;
+
+-- Controllo ... data ...
+CREATE OR REPLACE TRIGGER CHECK_DATA_RILASCIO
+BEFORE INSERT ON GIOCO
+FOR EACH ROW
+DECLARE
+    v_data_fondazione_editore DATE;
+    v_data_fondazione_sviluppatore DATE;
+BEGIN
+    -- Recupera la data di fondazione dell'editore corrispondente
+    SELECT ANNO_FONDAZIONE_EDITORE INTO v_data_fondazione_editore
+    FROM EDITORE
+    WHERE NOME_EDITORE = :NEW.NOME_EDITORE;
+
+    -- Recupera la data di fondazione dello sviluppatore corrispondente
+    SELECT ANNO_FONDAZIONE_SVILUPPATORE INTO v_data_fondazione_sviluppatore
+    FROM CASA_SVILUPPATRICE
+    WHERE NOME_SVILUPPATORE = :NEW.NOME_SVILUPPATORE;
+
+    -- Controlla se la data di rilascio è successiva alle date di fondazione
+    IF :NEW.DATA_RILASCIO <= v_data_fondazione_editore OR :NEW.DATA_RILASCIO <= v_data_fondazione_sviluppatore THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La data di rilascio del gioco deve essere successiva alle date di fondazione dell''editore e dello sviluppatore.');
+    END IF;
+END;
+
+--C...
+
+
