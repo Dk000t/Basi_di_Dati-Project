@@ -152,6 +152,56 @@ BEGIN
     END IF;
 END;
 
---C...
+
+--verificare che l'utente possa inserire solo una recensione
+CREATE OR REPLACE TRIGGER checkLimitRecension
+BEFORE INSERT ON RECENSIONE 
+FOR EACH ROW
+DECLARE
+    rec_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO rec_count
+    FROM RECENSIONE
+    WHERE USERNAME = :NEW.USERNAME
+    AND NOME_GIOCO = :NEW.NOME_GIOCO;
+
+    IF rec_count = 1 THEN
+       RAISE_APPLICATION_ERROR(-20008, 'Only one review can be submitted per game');
+    END IF;
+END;
+
+
+--verificare che la data creazione di un post non sia inferiore alla data creazione della community
+CREATE OR REPLACE TRIGGER checkPostDate
+BEFORE INSERT ON POST
+FOR EACH ROW
+DECLARE
+    wrongPostDate  EXCEPTION;
+BEGIN
+    IF :NEW.DATA.PUBBLICAZIONE < :NEW.DATA.CREAZIONE THEN --confronto tra post e community
+        RAISE wrongPostDate;
+    END IF;
+EXCEPTION
+    WHEN wrongPostDate THEN  
+        RAISE_APPLICATION_ERROR(-20007, 'Post date error');
+END;
+
+
+--Trigger data creazione utente(non deve essere superiore della data attuale)
+CREATE OR REPLACE TRIGGER checkDateUser
+BEFORE INSERT ON UTENTE 
+FOR EACH ROW 
+DECLARE
+    wrongDateUser   EXCEPTION;
+BEGIN
+    IF :NEW.DATA_ISCRIZIONE > SYSDATE THEN
+        RAISE wrongDateUser;
+    END IF;
+EXCEPTION
+    WHEN wrongDateUser THEN
+        RAISE_APPLICATION_ERROR(-20000, 'La data non e''corretta');
+END;
+
 
 
