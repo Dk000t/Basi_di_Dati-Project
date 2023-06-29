@@ -1,3 +1,18 @@
+CREATE OR REPLACE TRIGGER controllo_eta_utente
+BEFORE INSERT ON UTENTE
+FOR EACH ROW
+DECLARE
+    anni NUMBER;
+BEGIN
+    -- Calcola l'età dell'utente confrontando la data di nascita con la data corrente
+    anni := TRUNC(MONTHS_BETWEEN(SYSDATE, :NEW.DATA_NASCITA) / 12);
+    
+    -- Se l'utente ha meno di 14 anni, solleva un'eccezione
+    IF anni < 14 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'L''utente deve avere almeno 14 anni.');
+    END IF;
+END;
+
 --Controllo coerenza data creazione community / data iscrizione utente.
 CREATE OR REPLACE TRIGGER controllo_data_creazione_community
 BEFORE INSERT ON COMMUNITY
