@@ -1,3 +1,4 @@
+--Controllo se l'eta' e' maggiore uguale di 14.
 CREATE OR REPLACE TRIGGER controllo_eta_utente
 BEFORE INSERT ON UTENTE
 FOR EACH ROW
