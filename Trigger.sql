@@ -153,23 +153,6 @@ BEGIN
 END;
 
 
---verificare che l'utente possa inserire solo una recensione
-CREATE OR REPLACE TRIGGER checkLimitRecension
-BEFORE INSERT ON RECENSIONE 
-FOR EACH ROW
-DECLARE
-    rec_count NUMBER;
-BEGIN
-    SELECT COUNT(*) INTO rec_count
-    FROM RECENSIONE
-    WHERE USERNAME = :NEW.USERNAME AND NOME_GIOCO = :NEW.NOME_GIOCO;
-
-    IF rec_count > 0 THEN
-       RAISE_APPLICATION_ERROR(-20008, 'Only one review can be submitted per game');
-    END IF;
-END;
-
-
 --verificare che la data creazione di un post non sia inferiore alla data creazione della community
 CREATE OR REPLACE TRIGGER checkPostDate
 BEFORE INSERT ON POST
