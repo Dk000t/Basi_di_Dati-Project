@@ -160,11 +160,9 @@ FOR EACH ROW
 DECLARE
     rec_count NUMBER;
 BEGIN
-    SELECT COUNT(*)
-    INTO rec_count
+    SELECT COUNT(*) INTO rec_count
     FROM RECENSIONE
-    WHERE USERNAME = :NEW.USERNAME
-    AND NOME_GIOCO = :NEW.NOME_GIOCO;
+    WHERE USERNAME = :NEW.USERNAME AND NOME_GIOCO = :NEW.NOME_GIOCO;
 
     IF rec_count > 0 THEN
        RAISE_APPLICATION_ERROR(-20008, 'Only one review can be submitted per game');
