@@ -185,4 +185,22 @@ EXCEPTION
 END;
 
 
+--Trigger che verifica il numero massimo di community che l'utente puo' creare (essendo una relazione 1:N nell'E/R)
+CREATE OR REPLACE TRIGGER check_community_limit
+BEFORE INSERT ON COMMUNITY
+FOR EACH ROW
+DECLARE
+    limite_community CONSTANT NUMBER := 3;
+    numero_community NUMBER;
+BEGIN
+    SELECT COUNT(*) INTO numero_community
+    FROM COMMUNITY
+    WHERE USERNAME = :NEW.USERNAME;
+
+    IF numero_community >= limite_community THEN
+        RAISE_APPLICATION_ERROR(-20012, 'Hai raggiunto il numero massimo di community che puoi creare.');
+    END IF;
+END;
+
+
 
