@@ -166,7 +166,7 @@ BEGIN
     WHERE USERNAME = :NEW.USERNAME
     AND NOME_GIOCO = :NEW.NOME_GIOCO;
 
-    IF rec_count = 1 THEN
+    IF rec_count > 0 THEN
        RAISE_APPLICATION_ERROR(-20008, 'Only one review can be submitted per game');
     END IF;
 END;
