@@ -190,7 +190,7 @@ CREATE OR REPLACE TRIGGER check_community_limit
 BEFORE INSERT ON COMMUNITY
 FOR EACH ROW
 DECLARE
-    limite_community CONSTANT NUMBER := 3;
+    limite_community CONSTANT NUMBER := 5;
     numero_community NUMBER;
 BEGIN
     SELECT COUNT(*) INTO numero_community
