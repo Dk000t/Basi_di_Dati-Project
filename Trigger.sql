@@ -92,7 +92,7 @@ BEGIN
     END IF;
 END;
 
---Controllo ...data ...
+--Controllo coerenza data segue ed iscrizione utente.
 CREATE OR REPLACE TRIGGER CHECK_DATA_SEGUE
 BEFORE INSERT ON SEGUE
 FOR EACH ROW
@@ -110,7 +110,7 @@ BEGIN
     END IF;
 END;
 
---Controllo ... data ...
+--Controllo coerenza data adesione gruppo e data iscrizione utente.
 CREATE OR REPLACE TRIGGER CHECK_DATA_ADESIONE
 BEFORE INSERT ON FA_PARTE
 FOR EACH ROW
@@ -128,7 +128,7 @@ BEGIN
     END IF;
 END;
 
--- Controllo ... data ...
+-- Controllo coerenza data pubblicazione gioco con editore e sviluppatore.
 CREATE OR REPLACE TRIGGER CHECK_DATA_RILASCIO
 BEFORE INSERT ON GIOCO
 FOR EACH ROW
@@ -152,22 +152,174 @@ BEGIN
     END IF;
 END;
 
-
---verificare che la data creazione di un post non sia inferiore alla data creazione della community
-CREATE OR REPLACE TRIGGER checkPostDate
-BEFORE INSERT ON POST
+--Controllo coerenza inserimento gioco in lista desideri controllando che sia maggiore alla data di iscrizione e alla data di rilascio di gioco.
+CREATE OR REPLACE TRIGGER TRG_CONTROLLA_INSERIMENTO_DESIDERI
+BEFORE INSERT ON LISTA_DESIDERI
 FOR EACH ROW
 DECLARE
-    wrongPostDate  EXCEPTION;
+    v_data_iscrizione DATE;
+    v_data_rilascio DATE;
 BEGIN
-    IF :NEW.DATA.PUBBLICAZIONE < :NEW.DATA.CREAZIONE THEN --confronto tra post e community
-        RAISE wrongPostDate;
+    -- Recupera la DATA_ISCRIZIONE dell'utente
+    SELECT DATA_ISCRIZIONE INTO v_data_iscrizione
+    FROM UTENTE
+    WHERE USERNAME = :NEW.USERNAME;
+
+    -- Recupera la DATA_RILASCIO del gioco
+    SELECT DATA_RILASCIO INTO v_data_rilascio
+    FROM GIOCO
+    WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
+
+    -- Controlla che la DATA_INSERIMENTO sia successiva sia alla DATA_ISCRIZIONE che alla DATA_RILASCIO
+    IF :NEW.DATA_INSERIMENTO <= v_data_iscrizione AND :NEW.DATA_INSERIMENTO <= v_data_rilascio THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La DATA_INSERIMENTO deve essere successiva sia alla DATA_ISCRIZIONE dell''utente che alla DATA_RILASCIO del gioco.');
     END IF;
 EXCEPTION
-    WHEN wrongPostDate THEN  
-        RAISE_APPLICATION_ERROR(-20007, 'Post date error');
+    WHEN NO_DATA_FOUND THEN
+        -- Gestisci l'eccezione se non vengono trovati i dati dell'utente o del gioco
+        RAISE_APPLICATION_ERROR(-20002, 'Utente o gioco non trovato.');
 END;
 
+--Controllo coerenza data ottenimento collezionabile con data iscrizione utente e data pagamento gioco.
+CREATE OR REPLACE TRIGGER check_data_ottenimento
+BEFORE INSERT ON OTTIENE_COLLEZIONABILE
+FOR EACH ROW
+DECLARE
+    utente_iscrizione DATE;
+    pagamento_data DATE;
+BEGIN
+    SELECT DATA_ISCRIZIONE INTO utente_iscrizione
+    FROM UTENTE
+    WHERE USERNAME = :NEW.USERNAME;
+
+    SELECT DATA_PAGAMENTO INTO pagamento_data
+    FROM PAGAMENTO
+    WHERE CODICE_RICEVUTA_PAGAMENTO = :NEW.CODICE_RICEVUTA_PAGAMENTO;
+
+    IF (:NEW.DATA_OTTENIMENTO_COLLEZIONABILE <= utente_iscrizione OR :NEW.DATA_OTTENIMENTO_COLLEZIONABILE <= pagamento_data) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La data di ottenimento del collezionabile deve essere successiva alla data di iscrizione dell''utente e alla data di pagamento.');
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        NULL; -- Gestione dell'eccezione se non vengono trovati i dati corrispondenti
+END;
+
+--Controllo coerenza data raggiungimento obiettivo con data iscrizione utente e data pagamento gioco.
+CREATE OR REPLACE TRIGGER check_data_ottenimento_obiettivo
+BEFORE INSERT ON RAGGIUNGE_OBIETTIVO
+FOR EACH ROW
+DECLARE
+    utente_iscrizione DATE;
+    pagamento_data DATE;
+BEGIN
+    SELECT DATA_ISCRIZIONE INTO utente_iscrizione
+    FROM UTENTE
+    WHERE USERNAME = :NEW.USERNAME;
+
+    SELECT DATA_PAGAMENTO INTO pagamento_data
+    FROM PAGAMENTO
+    WHERE CODICE_RICEVUTA_PAGAMENTO = :NEW.CODICE_RICEVUTTO_OBIETTIVO;
+
+    IF (:NEW.DATA_OTTENIMENTO_OBIETTIVO <= utente_iscrizione OR :NEW.DATA_OTTENIMENTO_OBIETTIVO <= pagamento_data) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La data di ottenimento dell''obiettivo deve essere successiva alla data di iscrizione dell''utente e alla data di pagamento.');
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        NULL; -- Gestione dell'eccezione se non vengono trovati i dati corrispondenti
+END;
+
+--Controllo data recensione con data iscrizione utente e data acquisto gioco
+CREATE OR REPLACE TRIGGER check_data_recensione
+BEFORE INSERT ON RECENSIONE
+FOR EACH ROW
+DECLARE
+    utente_iscrizione DATE;
+    pagamento_data DATE;
+BEGIN
+    SELECT DATA_ISCRIZIONE INTO utente_iscrizione
+    FROM UTENTE
+    WHERE USERNAME = :NEW.USERNAME;
+
+    SELECT DATA_PAGAMENTO INTO pagamento_data
+    FROM PAGAMENTO
+    WHERE CODICE_RICEVUTA_PAGAMENTO = :NEW.CODICE_RICEVUTA_PAGAMENTO;
+
+    IF (:NEW.DATA_RECENSIONE <= utente_iscrizione OR :NEW.DATA_RECENSIONE <= pagamento_data) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La data di recensione deve essere successiva alla data di iscrizione dell''utente e alla data di pagamento.');
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        NULL; -- Gestione dell'eccezione se non vengono trovati i dati corrispondenti
+END;
+
+--Controllo data pagamento con data iscrizione utente e data rilascio gioco.
+CREATE OR REPLACE TRIGGER check_data_pagamento
+BEFORE INSERT ON PAGAMENTO
+FOR EACH ROW
+DECLARE
+    utente_iscrizione DATE;
+    gioco_data_rilascio DATE;
+BEGIN
+    SELECT DATA_ISCRIZIONE INTO utente_iscrizione
+    FROM UTENTE
+    WHERE USERNAME = :NEW.USERNAME;
+
+    SELECT DATA_RILASCIO INTO gioco_data_rilascio
+    FROM GIOCO
+    WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
+
+    IF (:NEW.DATA_PAGAMENTO <= utente_iscrizione OR :NEW.DATA_PAGAMENTO <= gioco_data_rilascio) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La data di pagamento deve essere successiva alla data di iscrizione dell''utente e alla data di rilascio del gioco.');
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        NULL; -- Gestione dell'eccezione se non vengono trovati i dati corrispondenti
+END;
+
+--Controllo che data key_gioco sia maggiore di data iscrizione e data rilascio gioco
+CREATE OR REPLACE TRIGGER check_data_scadenza
+BEFORE INSERT ON KEY_GIOCO
+FOR EACH ROW
+DECLARE
+    utente_iscrizione DATE;
+    gioco_data_rilascio DATE;
+BEGIN
+    SELECT DATA_ISCRIZIONE INTO utente_iscrizione
+    FROM UTENTE
+    WHERE USERNAME = :NEW.USERNAME;
+
+    SELECT DATA_RILASCIO INTO gioco_data_rilascio
+    FROM GIOCO
+    WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
+
+    IF (:NEW.DATA_SCADENZA <= utente_iscrizione OR :NEW.DATA_SCADENZA <= gioco_data_rilascio) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La data di scadenza della chiave deve essere successiva alla data di iscrizione dell''utente e alla data di rilascio del gioco.');
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        NULL; -- Gestione dell'eccezione se non vengono trovati i dati corrispondenti
+END;
+
+--Controlla che data DLC sia dopo data_rilascio gioco
+CREATE OR REPLACE TRIGGER check_data_rilascio_dlc
+BEFORE INSERT ON DLC
+FOR EACH ROW
+DECLARE
+    gioco_data_rilascio DATE;
+BEGIN
+    SELECT DATA_RILASCIO INTO gioco_data_rilascio
+    FROM GIOCO
+    WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
+
+    IF (:NEW.DATA_RILASCIO_DLC <= gioco_data_rilascio) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La data di rilascio del DLC deve essere successiva alla data di rilascio del gioco.');
+    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        NULL; -- Gestione dell'eccezione se non viene trovata la corrispondenza del gioco
+END;
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 --Trigger data creazione utente(non deve essere superiore della data attuale)
 CREATE OR REPLACE TRIGGER checkDateUser
@@ -183,7 +335,6 @@ EXCEPTION
     WHEN wrongDateUser THEN
         RAISE_APPLICATION_ERROR(-20000, 'La data non e''corretta');
 END;
-
 
 --Trigger che verifica il numero massimo di community che l'utente puo' creare (essendo una relazione 1:N nell'E/R)
 CREATE OR REPLACE TRIGGER check_community_limit
