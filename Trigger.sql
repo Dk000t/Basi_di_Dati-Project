@@ -101,13 +101,10 @@ FOR EACH ROW
 DECLARE
     v_count NUMBER;
 BEGIN
-    -- Controllo se esiste una tupla inversa
     SELECT COUNT(*)
     INTO v_count
     FROM E_AMICO_DI
     WHERE USERNAME_1 = :NEW.USERNAME_2 AND USERNAME_2 = :NEW.USERNAME_1;
-
-    -- Se esiste una tupla inversa, genero un errore
     IF v_count > 0 THEN
         RAISE_APPLICATION_ERROR(-20007, 'La relazione di amicizia inversa esiste già.');
     END IF;
