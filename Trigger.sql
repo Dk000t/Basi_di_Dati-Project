@@ -5,10 +5,8 @@ FOR EACH ROW
 DECLARE
     anni NUMBER;
 BEGIN
-    -- Calcola l'età dell'utente confrontando la data di nascita con la data corrente
     anni := TRUNC(MONTHS_BETWEEN(SYSDATE, :NEW.DATA_NASCITA) / 12);
     
-    -- Se l'utente ha meno di 14 anni, solleva un'eccezione
     IF anni < 14 THEN
         RAISE_APPLICATION_ERROR(-20001, 'L''utente deve avere almeno 14 anni.');
     END IF;
@@ -21,12 +19,9 @@ FOR EACH ROW
 DECLARE
     data_iscrizione_utente DATE;
 BEGIN
-    -- Ottieni la data di iscrizione dell'utente
     SELECT DATA_ISCRIZIONE INTO data_iscrizione_utente
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME;
-
-    -- Verifica se la data di creazione della community è minore o uguale alla data di iscrizione dell'utente
     IF :NEW.DATA_CREAZIONE <= data_iscrizione_utente THEN
         RAISE_APPLICATION_ERROR(-20001, 'La data di creazione della community deve essere successiva alla data di iscrizione dell''utente.');
     END IF;
@@ -39,12 +34,10 @@ FOR EACH ROW
 DECLARE
     v_data_creazione DATE;
 BEGIN
-    -- Recupera la data di creazione della community corrispondente
     SELECT DATA_CREAZIONE INTO v_data_creazione
     FROM COMMUNITY
     WHERE NOME_COMMUNITY = :NEW.NOME_COMMUNITY;
     
-    -- Controlla se la data di pubblicazione è successiva alla data di creazione
     IF :NEW.DATA_PUBBLICAZIONE <= v_data_creazione THEN
         RAISE_APPLICATION_ERROR(-20002, 'La data di pubblicazione deve essere successiva alla data di creazione della community.');
     END IF;
@@ -57,12 +50,10 @@ FOR EACH ROW
 DECLARE
     v_data_iscrizione DATE;
 BEGIN
-    -- Recupera la data di iscrizione dell'utente corrispondente
     SELECT DATA_ISCRIZIONE INTO v_data_iscrizione
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME;
 
-    -- Controlla se la data di creazione è successiva alla data di iscrizione
     IF :NEW.DATA_CREAZIONE <= v_data_iscrizione THEN
         RAISE_APPLICATION_ERROR(-20003, 'La data di creazione del gruppo deve essere successiva alla data di iscrizione dell''utente.');
     END IF;
@@ -76,17 +67,14 @@ DECLARE
     v_data_iscrizione_1 DATE;
     v_data_iscrizione_2 DATE;
 BEGIN
-    -- Recupera la data di iscrizione dell'utente USERNAME_1
     SELECT DATA_ISCRIZIONE INTO v_data_iscrizione_1
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME_1;
 
-    -- Recupera la data di iscrizione dell'utente USERNAME_2
     SELECT DATA_ISCRIZIONE INTO v_data_iscrizione_2
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME_2;
 
-    -- Controlla se la data di amicizia è successiva o uguale alle date di iscrizione
     IF :NEW.DATA_INIZIO < v_data_iscrizione_1 OR :NEW.DATA_INIZIO < v_data_iscrizione_2 THEN
         RAISE_APPLICATION_ERROR(-20004, 'La data di inizio amicizia deve essere successiva o uguale alle date di iscrizione degli utenti.');
     END IF;
@@ -99,12 +87,10 @@ FOR EACH ROW
 DECLARE
     v_data_iscrizione DATE;
 BEGIN
-    -- Recupera la data di iscrizione dell'utente corrispondente
     SELECT DATA_ISCRIZIONE INTO v_data_iscrizione
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME;
 
-    -- Controlla se la data di segue è successiva o uguale alla data di iscrizione
     IF :NEW.DATA_ISCRIZIONE < v_data_iscrizione THEN
         RAISE_APPLICATION_ERROR(-20005, 'La data di segue deve essere successiva o uguale alla data di iscrizione dell''utente.');
     END IF;
@@ -117,12 +103,10 @@ FOR EACH ROW
 DECLARE
     v_data_iscrizione DATE;
 BEGIN
-    -- Recupera la data di iscrizione dell'utente corrispondente
     SELECT DATA_ISCRIZIONE INTO v_data_iscrizione
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME;
 
-    -- Controlla se la data di adesione è successiva o uguale alla data di iscrizione
     IF :NEW.DATA_ADESIONE < v_data_iscrizione THEN
         RAISE_APPLICATION_ERROR(-20006, 'La data di adesione deve essere successiva o uguale alla data di iscrizione dell''utente.');
     END IF;
@@ -136,17 +120,14 @@ DECLARE
     v_data_fondazione_editore DATE;
     v_data_fondazione_sviluppatore DATE;
 BEGIN
-    -- Recupera la data di fondazione dell'editore corrispondente
     SELECT ANNO_FONDAZIONE_EDITORE INTO v_data_fondazione_editore
     FROM EDITORE
     WHERE NOME_EDITORE = :NEW.NOME_EDITORE;
 
-    -- Recupera la data di fondazione dello sviluppatore corrispondente
     SELECT ANNO_FONDAZIONE_SVILUPPATORE INTO v_data_fondazione_sviluppatore
     FROM CASA_SVILUPPATRICE
     WHERE NOME_SVILUPPATORE = :NEW.NOME_SVILUPPATORE;
 
-    -- Controlla se la data di rilascio è successiva alle date di fondazione
     IF :NEW.DATA_RILASCIO <= v_data_fondazione_editore OR :NEW.DATA_RILASCIO <= v_data_fondazione_sviluppatore THEN
         RAISE_APPLICATION_ERROR(-20001, 'La data di rilascio del gioco deve essere successiva alle date di fondazione dell''editore e dello sviluppatore.');
     END IF;
@@ -160,23 +141,19 @@ DECLARE
     v_data_iscrizione DATE;
     v_data_rilascio DATE;
 BEGIN
-    -- Recupera la DATA_ISCRIZIONE dell'utente
     SELECT DATA_ISCRIZIONE INTO v_data_iscrizione
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME;
 
-    -- Recupera la DATA_RILASCIO del gioco
     SELECT DATA_RILASCIO INTO v_data_rilascio
     FROM GIOCO
     WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
 
-    -- Controlla che la DATA_INSERIMENTO sia successiva sia alla DATA_ISCRIZIONE che alla DATA_RILASCIO
     IF :NEW.DATA_INSERIMENTO <= v_data_iscrizione AND :NEW.DATA_INSERIMENTO <= v_data_rilascio THEN
         RAISE_APPLICATION_ERROR(-20001, 'La DATA_INSERIMENTO deve essere successiva sia alla DATA_ISCRIZIONE dell''utente che alla DATA_RILASCIO del gioco.');
     END IF;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        -- Gestisci l'eccezione se non vengono trovati i dati dell'utente o del gioco
         RAISE_APPLICATION_ERROR(-20002, 'Utente o gioco non trovato.');
 END;
 
@@ -201,7 +178,7 @@ BEGIN
     END IF;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        NULL; -- Gestione dell'eccezione se non vengono trovati i dati corrispondenti
+        NULL; 
 END;
 
 --Controllo coerenza data raggiungimento obiettivo con data iscrizione utente e data pagamento gioco.
@@ -225,7 +202,7 @@ BEGIN
     END IF;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        NULL; -- Gestione dell'eccezione se non vengono trovati i dati corrispondenti
+        NULL; 
 END;
 
 --Controllo data recensione con data iscrizione utente e data acquisto gioco
@@ -249,7 +226,7 @@ BEGIN
     END IF;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        NULL; -- Gestione dell'eccezione se non vengono trovati i dati corrispondenti
+        NULL;
 END;
 
 --Controllo data pagamento con data iscrizione utente e data rilascio gioco.
@@ -273,7 +250,7 @@ BEGIN
     END IF;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        NULL; -- Gestione dell'eccezione se non vengono trovati i dati corrispondenti
+        NULL;
 END;
 
 --Controllo che data key_gioco sia maggiore di data iscrizione e data rilascio gioco
@@ -297,7 +274,7 @@ BEGIN
     END IF;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        NULL; -- Gestione dell'eccezione se non vengono trovati i dati corrispondenti
+        NULL; 
 END;
 
 --Controlla che data DLC sia dopo data_rilascio gioco
@@ -316,7 +293,7 @@ BEGIN
     END IF;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        NULL; -- Gestione dell'eccezione se non viene trovata la corrispondenza del gioco
+        NULL; 
 END;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
