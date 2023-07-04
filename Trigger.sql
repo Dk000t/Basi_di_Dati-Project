@@ -149,7 +149,7 @@ BEGIN
     END IF;
 END;
 
--- Controllo coerenza data pubblicazione gioco con editore e sviluppatore.
+-- Controllo coerenza data pubblicazione gioco con editore e sviluppatore.  (NON FUNZIONA - DA MODIFICARE ANNO FONDAZIONE EDITORE E SVILUPPATORE CON DATA DD/MM/YY) 
 CREATE OR REPLACE TRIGGER CHECK_DATA_RILASCIO
 BEFORE INSERT ON GIOCO
 FOR EACH ROW
@@ -166,32 +166,29 @@ BEGIN
     WHERE NOME_SVILUPPATORE = :NEW.NOME_SVILUPPATORE;
 
     IF :NEW.DATA_RILASCIO <= v_data_fondazione_editore OR :NEW.DATA_RILASCIO <= v_data_fondazione_sviluppatore THEN
-        RAISE_APPLICATION_ERROR(-20001, 'La data di rilascio del gioco deve essere successiva alle date di fondazione dell''editore e dello sviluppatore.');
+        RAISE_APPLICATION_ERROR(-20010, 'La data di rilascio del gioco deve essere successiva alle date di fondazione dell''editore e dello sviluppatore.');
     END IF;
 END;
 
 --Controllo coerenza inserimento gioco in lista desideri controllando che sia maggiore alla data di iscrizione e alla data di rilascio di gioco.
-CREATE OR REPLACE TRIGGER TRG_CONTROLLA_INSERIMENTO_DESIDERI
+CREATE OR REPLACE TRIGGER check_wishlist_insert
 BEFORE INSERT ON LISTA_DESIDERI
 FOR EACH ROW
 DECLARE
-    v_data_iscrizione DATE;
-    v_data_rilascio DATE;
+    v_user_registration_date UTENTE.DATA_ISCRIZIONE%TYPE;
+    v_game_release_date GIOCO.DATA_RILASCIO%TYPE;
 BEGIN
-    SELECT DATA_ISCRIZIONE INTO v_data_iscrizione
+    SELECT DATA_ISCRIZIONE
+    INTO v_user_registration_date
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME;
-
-    SELECT DATA_RILASCIO INTO v_data_rilascio
+    SELECT DATA_RILASCIO
+    INTO v_game_release_date
     FROM GIOCO
     WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
-
-    IF :NEW.DATA_INSERIMENTO <= v_data_iscrizione AND :NEW.DATA_INSERIMENTO <= v_data_rilascio THEN
-        RAISE_APPLICATION_ERROR(-20001, 'La DATA_INSERIMENTO deve essere successiva sia alla DATA_ISCRIZIONE dell''utente che alla DATA_RILASCIO del gioco.');
+    IF :NEW.DATA_INSERIMENTO < v_user_registration_date OR :NEW.DATA_INSERIMENTO < v_game_release_date THEN
+        RAISE_APPLICATION_ERROR(-200011, 'La data di inserimento deve essere successiva alla data di iscrizione dell''utente e alla data di rilascio del gioco.');
     END IF;
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        RAISE_APPLICATION_ERROR(-20002, 'Utente o gioco non trovato.');
 END;
 
 --Controllo coerenza data ottenimento collezionabile con data iscrizione utente e data pagamento gioco.
