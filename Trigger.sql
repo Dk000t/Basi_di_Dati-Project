@@ -21,7 +21,7 @@ BEGIN
     SELECT DATA_ISCRIZIONE INTO data_iscrizione_utente
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME;
-    IF :NEW.DATA_CREAZIONE <= data_iscrizione_utente THEN
+    IF :NEW.DATA_CREAZIONE < data_iscrizione_utente THEN
         RAISE_APPLICATION_ERROR(-20001, 'La data di creazione della community deve essere successiva alla data di iscrizione dell''utente.');
     END IF;
 END;
