@@ -170,7 +170,7 @@ BEGIN
     END IF;
 END;
 
---Controllo coerenza inserimento gioco in lista desideri controllando che sia maggiore alla data di iscrizione e alla data di rilascio di gioco.
+--Controllo coerenza inserimento gioco in lista desideri controllando che sia maggiore alla data di iscrizione e alla data di rilascio di gioco. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER check_wishlist_insert
 BEFORE INSERT ON LISTA_DESIDERI
 FOR EACH ROW
@@ -187,7 +187,7 @@ BEGIN
     FROM GIOCO
     WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
     IF :NEW.DATA_INSERIMENTO < v_user_registration_date OR :NEW.DATA_INSERIMENTO < v_game_release_date THEN
-        RAISE_APPLICATION_ERROR(-200011, 'La data di inserimento deve essere successiva alla data di iscrizione dell''utente e alla data di rilascio del gioco.');
+        RAISE_APPLICATION_ERROR(-20011, 'La data di inserimento deve essere successiva alla data di iscrizione dell''utente e alla data di rilascio del gioco.');
     END IF;
 END;
 
