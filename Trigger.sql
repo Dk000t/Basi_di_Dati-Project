@@ -126,19 +126,26 @@ BEGIN
     END IF;
 END;
 
---Controllo coerenza data adesione gruppo e data iscrizione utente.
-CREATE OR REPLACE TRIGGER CHECK_DATA_ADESIONE
+--Controllo coerenza data adesione gruppo e data iscrizione utente e data creazione gruppo. (TESTATO FUNZIONA)
+CREATE OR REPLACE TRIGGER CHECK_ADESIONE_GRUPPO
 BEFORE INSERT ON FA_PARTE
 FOR EACH ROW
 DECLARE
-    v_data_iscrizione DATE;
+    v_data_iscrizione UTENTE.DATA_ISCRIZIONE%TYPE;
+    v_data_creazione GRUPPO.DATA_CREAZIONE%TYPE;
 BEGIN
-    SELECT DATA_ISCRIZIONE INTO v_data_iscrizione
+    SELECT DATA_ISCRIZIONE
+    INTO v_data_iscrizione
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME;
 
-    IF :NEW.DATA_ADESIONE < v_data_iscrizione THEN
-        RAISE_APPLICATION_ERROR(-20006, 'La data di adesione deve essere successiva o uguale alla data di iscrizione dell''utente.');
+    SELECT DATA_CREAZIONE
+    INTO v_data_creazione
+    FROM GRUPPO
+    WHERE NOME_GRUPPO = :NEW.NOME_GRUPPO;
+
+    IF :NEW.DATA_ADESIONE <= v_data_iscrizione OR :NEW.DATA_ADESIONE <= v_data_creazione THEN
+        RAISE_APPLICATION_ERROR(-20009, 'La data di adesione al gruppo deve essere successiva sia alla data di iscrizione dell''utente che alla data di creazione del gruppo.');
     END IF;
 END;
 
