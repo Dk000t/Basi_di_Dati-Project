@@ -110,8 +110,8 @@ BEGIN
     END IF;
 END;
 
---Controllo coerenza data segue ed iscrizione utente.
-CREATE OR REPLACE TRIGGER CHECK_DATA_SEGUE
+--Controllo coerenza data segue ed iscrizione utente. (TESTATO FUNZIONA)
+CREATE OR REPLACE TRIGGER CHECK_DATA_SEGUE 
 BEFORE INSERT ON SEGUE
 FOR EACH ROW
 DECLARE
@@ -122,7 +122,7 @@ BEGIN
     WHERE USERNAME = :NEW.USERNAME;
 
     IF :NEW.DATA_ISCRIZIONE < v_data_iscrizione THEN
-        RAISE_APPLICATION_ERROR(-20005, 'La data di segue deve essere successiva o uguale alla data di iscrizione dell''utente.');
+        RAISE_APPLICATION_ERROR(-20008, 'La data di segue deve essere successiva o uguale alla data di iscrizione dell''utente.');
     END IF;
 END;
 
