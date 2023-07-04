@@ -1,4 +1,4 @@
---Controllo se l'eta' e' maggiore uguale di 14.(TESTATO FUNZIONA)
+--Controllo se l'eta' e' maggiore uguale di 14. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_DATA_ISCRIZIONE
 BEFORE INSERT ON UTENTE
 FOR EACH ROW
@@ -11,7 +11,7 @@ BEGIN
     END IF;
 END;
 
---Controllo coerenza data creazione community / data iscrizione utente.
+--Controllo coerenza data creazione community / data iscrizione utente. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER controllo_data_creazione_community
 BEFORE INSERT ON COMMUNITY
 FOR EACH ROW
@@ -22,7 +22,7 @@ BEGIN
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME;
     IF :NEW.DATA_CREAZIONE < data_iscrizione_utente THEN
-        RAISE_APPLICATION_ERROR(-20001, 'La data di creazione della community deve essere successiva alla data di iscrizione dell''utente.');
+        RAISE_APPLICATION_ERROR(-20002, 'La data di creazione della community deve essere successiva alla data di iscrizione dell''utente.');
     END IF;
 END;
 
@@ -37,8 +37,8 @@ BEGIN
     FROM COMMUNITY
     WHERE NOME_COMMUNITY = :NEW.NOME_COMMUNITY;
     
-    IF :NEW.DATA_PUBBLICAZIONE <= v_data_creazione THEN
-        RAISE_APPLICATION_ERROR(-20002, 'La data di pubblicazione deve essere successiva alla data di creazione della community.');
+    IF :NEW.DATA_PUBBLICAZIONE < v_data_creazione THEN
+        RAISE_APPLICATION_ERROR(-20003, 'La data di pubblicazione deve essere successiva alla data di creazione della community.');
     END IF;
 END;
 
