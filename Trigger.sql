@@ -73,7 +73,7 @@ END;
 /
 
 
---Controllo coerenza data di amicizia / data iscrizione utente.
+--Controllo coerenza data di amicizia / data iscrizione utente. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_DATA_AMICIZIA
 BEFORE INSERT ON E_AMICO_DI
 FOR EACH ROW
@@ -90,7 +90,7 @@ BEGIN
     WHERE USERNAME = :NEW.USERNAME_2;
 
     IF :NEW.DATA_INIZIO < v_data_iscrizione_1 OR :NEW.DATA_INIZIO < v_data_iscrizione_2 THEN
-        RAISE_APPLICATION_ERROR(-20004, 'La data di inizio amicizia deve essere successiva o uguale alle date di iscrizione degli utenti.');
+        RAISE_APPLICATION_ERROR(-20006, 'La data di inizio amicizia deve essere successiva o uguale alle date di iscrizione degli utenti.');
     END IF;
 END;
 
