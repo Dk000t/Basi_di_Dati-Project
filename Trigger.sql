@@ -26,7 +26,7 @@ BEGIN
     END IF;
 END;
 
---Controllo coerenza data pubblicazione post / data creazione community.
+--Controllo coerenza data pubblicazione post / data creazione community. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_DATA_PUBBLICAZIONE
 BEFORE INSERT ON POST
 FOR EACH ROW
@@ -42,7 +42,7 @@ BEGIN
     END IF;
 END;
 
---Controllo coerenza data creazione gruppo / data iscrizione utente.
+--Controllo coerenza data creazione gruppo / data iscrizione utente. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_DATA_CREAZIONE
 BEFORE INSERT ON GRUPPO
 FOR EACH ROW
@@ -53,8 +53,8 @@ BEGIN
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME;
 
-    IF :NEW.DATA_CREAZIONE <= v_data_iscrizione THEN
-        RAISE_APPLICATION_ERROR(-20003, 'La data di creazione del gruppo deve essere successiva alla data di iscrizione dell''utente.');
+    IF :NEW.DATA_CREAZIONE < v_data_iscrizione THEN
+        RAISE_APPLICATION_ERROR(-20004, 'La data di creazione del gruppo deve essere successiva alla data di iscrizione dell''utente.');
     END IF;
 END;
 
