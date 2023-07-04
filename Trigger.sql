@@ -1,14 +1,13 @@
---Controllo se l'eta' e' maggiore uguale di 14.
-CREATE OR REPLACE TRIGGER controllo_eta_utente
+--Controllo se l'eta' e' maggiore uguale di 14.(TESTATO FUNZIONA)
+CREATE OR REPLACE TRIGGER CHECK_DATA_ISCRIZIONE
 BEFORE INSERT ON UTENTE
 FOR EACH ROW
 DECLARE
-    anni NUMBER;
+    anni_diff NUMBER;
 BEGIN
-    anni := TRUNC(MONTHS_BETWEEN(SYSDATE, :NEW.DATA_NASCITA) / 12);
-    
-    IF anni < 14 THEN
-        RAISE_APPLICATION_ERROR(-20001, 'L''utente deve avere almeno 14 anni.');
+    anni_diff := EXTRACT(YEAR FROM :NEW.DATA_ISCRIZIONE) - EXTRACT(YEAR FROM :NEW.DATA_NASCITA);
+    IF anni_diff < 14 THEN
+        RAISE_APPLICATION_ERROR(-20001, 'L''utente deve avere almeno 14 anni per iscriversi.');
     END IF;
 END;
 
