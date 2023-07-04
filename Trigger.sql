@@ -192,27 +192,26 @@ BEGIN
 END;
 
 --Controllo coerenza data ottenimento collezionabile con data iscrizione utente e data pagamento gioco.
-CREATE OR REPLACE TRIGGER check_data_ottenimento
+CREATE OR REPLACE TRIGGER check_obtained_collectible
 BEFORE INSERT ON OTTIENE_COLLEZIONABILE
 FOR EACH ROW
 DECLARE
-    utente_iscrizione DATE;
-    pagamento_data DATE;
+    v_user_registration_date UTENTE.DATA_ISCRIZIONE%TYPE;
+    v_payment_date PAGAMENTO.DATA_PAGAMENTO%TYPE;
 BEGIN
-    SELECT DATA_ISCRIZIONE INTO utente_iscrizione
+    SELECT DATA_ISCRIZIONE
+    INTO v_user_registration_date
     FROM UTENTE
     WHERE USERNAME = :NEW.USERNAME;
 
-    SELECT DATA_PAGAMENTO INTO pagamento_data
+    SELECT DATA_PAGAMENTO
+    INTO v_payment_date
     FROM PAGAMENTO
-    WHERE CODICE_RICEVUTA_PAGAMENTO = :NEW.CODICE_RICEVUTA_PAGAMENTO;
+    WHERE USERNAME = :NEW.USERNAME;
 
-    IF (:NEW.DATA_OTTENIMENTO_COLLEZIONABILE <= utente_iscrizione OR :NEW.DATA_OTTENIMENTO_COLLEZIONABILE <= pagamento_data) THEN
-        RAISE_APPLICATION_ERROR(-20001, 'La data di ottenimento del collezionabile deve essere successiva alla data di iscrizione dell''utente e alla data di pagamento.');
+    IF :NEW.DATA_OTTENIMENTO_COLLEZIONABILE < v_user_registration_date OR :NEW.DATA_OTTENIMENTO_COLLEZIONABILE < v_payment_date THEN
+        RAISE_APPLICATION_ERROR(-20012, 'La data di ottenimento del collezionabile deve essere successiva alla data di iscrizione dell''utente e alla data di pagamento.');
     END IF;
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        NULL; 
 END;
 
 --Controllo coerenza data raggiungimento obiettivo con data iscrizione utente e data pagamento gioco.
@@ -311,7 +310,7 @@ EXCEPTION
         NULL; 
 END;
 
---Controlla che data DLC sia dopo data_rilascio gioco
+--Controlla che data DLC sia dopo data_rilascio gioco (TESTATO FUNZIONANTE)
 CREATE OR REPLACE TRIGGER check_data_rilascio_dlc
 BEFORE INSERT ON DLC
 FOR EACH ROW
@@ -322,7 +321,7 @@ BEGIN
     FROM GIOCO
     WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
 
-    IF (:NEW.DATA_RILASCIO_DLC <= gioco_data_rilascio) THEN
+    IF (:NEW.DATA_RILASCIO_DLC < gioco_data_rilascio) THEN
         RAISE_APPLICATION_ERROR(-20001, 'La data di rilascio del DLC deve essere successiva alla data di rilascio del gioco.');
     END IF;
 EXCEPTION
