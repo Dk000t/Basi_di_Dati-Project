@@ -94,7 +94,7 @@ BEGIN
     END IF;
 END;
 
---Controllo duplicazione amicizia.
+--Controllo duplicazione amicizia. (Se esiste l'associazione inversa) (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_AMICIZIA_DUPLICATA
 BEFORE INSERT ON E_AMICO_DI
 FOR EACH ROW
