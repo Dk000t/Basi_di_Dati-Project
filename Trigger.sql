@@ -171,7 +171,7 @@ BEGIN
     
     -- Controlla che la data di rilascio sia successiva alle date di sviluppatore ed editore
     IF :NEW.DATA_RILASCIO <= v_data_sviluppatore OR :NEW.DATA_RILASCIO <= v_data_editore THEN
-        RAISE_APPLICATION_ERROR(-20001, 'La data di rilascio deve essere successiva alla data di fondazione dello sviluppatore e dell''editore.');
+        RAISE_APPLICATION_ERROR(-20010, 'La data di rilascio deve essere successiva alla data di fondazione dello sviluppatore e dell''editore.');
     END IF;
 END;
 
