@@ -159,17 +159,12 @@ DECLARE
     v_data_sviluppatore DATE;
     v_data_editore DATE;
 BEGIN
-    -- Recupera la data di fondazione dello sviluppatore
     SELECT DATA_FONDAZIONE_SVILUPPATORE INTO v_data_sviluppatore
     FROM CASA_SVILUPPATRICE
     WHERE NOME_SVILUPPATORE = :NEW.NOME_SVILUPPATORE;
-    
-    -- Recupera la data di fondazione dell'editore
     SELECT DATA_FONDAZIONE_EDITORE INTO v_data_editore
     FROM EDITORE
     WHERE NOME_EDITORE = :NEW.NOME_EDITORE;
-    
-    -- Controlla che la data di rilascio sia successiva alle date di sviluppatore ed editore
     IF :NEW.DATA_RILASCIO <= v_data_sviluppatore OR :NEW.DATA_RILASCIO <= v_data_editore THEN
         RAISE_APPLICATION_ERROR(-20010, 'La data di rilascio deve essere successiva alla data di fondazione dello sviluppatore e dell''editore.');
     END IF;
