@@ -315,9 +315,7 @@ EXCEPTION
         NULL; 
 END;
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
---Trigger data creazione utente(non deve essere superiore della data attuale)
+--Trigger data creazione utente(non deve essere superiore della data attuale). (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER checkDateUser
 BEFORE INSERT ON UTENTE 
 FOR EACH ROW 
@@ -330,23 +328,6 @@ BEGIN
 EXCEPTION
     WHEN wrongDateUser THEN
         RAISE_APPLICATION_ERROR(-20000, 'La data non e''corretta');
-END;
-
---Trigger che verifica il numero massimo di community che l'utente puo' creare (essendo una relazione 1:N nell'E/R)
-CREATE OR REPLACE TRIGGER check_community_limit
-BEFORE INSERT ON COMMUNITY
-FOR EACH ROW
-DECLARE
-    limite_community CONSTANT NUMBER := 5;
-    numero_community NUMBER;
-BEGIN
-    SELECT COUNT(*) INTO numero_community
-    FROM COMMUNITY
-    WHERE USERNAME = :NEW.USERNAME;
-
-    IF numero_community >= limite_community THEN
-        RAISE_APPLICATION_ERROR(-20012, 'Hai raggiunto il numero massimo di community che puoi creare.');
-    END IF;
 END;
 
 
