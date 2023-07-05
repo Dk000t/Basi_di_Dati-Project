@@ -330,5 +330,17 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20000, 'La data non e''corretta');
 END;
 
-
-
+--Controllo coerenza data rilascio aggiornamento con data rilascio gioco (TESTATO FUNZIONA)
+CREATE OR REPLACE TRIGGER TRG_CONTROLLA_DATA_AGGIORNAMENTO
+BEFORE INSERT ON AGGIORNAMENTO
+FOR EACH ROW
+DECLARE
+    v_data_rilascio_gioco DATE;
+BEGIN
+    SELECT DATA_RILASCIO INTO v_data_rilascio_gioco
+    FROM GIOCO
+    WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
+    IF :NEW.DATA_RILASCIO <= v_data_rilascio_gioco THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La data di aggiornamento deve essere successiva alla data di rilascio del gioco.');
+    END IF;
+END;
