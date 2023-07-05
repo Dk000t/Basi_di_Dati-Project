@@ -151,24 +151,27 @@ BEGIN
     END IF;
 END;
 
--- Controllo coerenza data pubblicazione gioco con editore e sviluppatore.  (NON FUNZIONA - DA MODIFICARE ANNO FONDAZIONE EDITORE E SVILUPPATORE CON DATA DD/MM/YY) 
-CREATE OR REPLACE TRIGGER CHECK_DATA_RILASCIO
+-- Controllo coerenza data pubblicazione gioco con editore e sviluppatore. (TESTATO FUNZIONA)
+CREATE OR REPLACE TRIGGER TRG_CONTROLLA_DATA_RILASCIO
 BEFORE INSERT ON GIOCO
 FOR EACH ROW
 DECLARE
-    v_data_fondazione_editore DATE;
-    v_data_fondazione_sviluppatore DATE;
+    v_data_sviluppatore DATE;
+    v_data_editore DATE;
 BEGIN
-    SELECT ANNO_FONDAZIONE_EDITORE INTO v_data_fondazione_editore
-    FROM EDITORE
-    WHERE NOME_EDITORE = :NEW.NOME_EDITORE;
-
-    SELECT ANNO_FONDAZIONE_SVILUPPATORE INTO v_data_fondazione_sviluppatore
+    -- Recupera la data di fondazione dello sviluppatore
+    SELECT DATA_FONDAZIONE_SVILUPPATORE INTO v_data_sviluppatore
     FROM CASA_SVILUPPATRICE
     WHERE NOME_SVILUPPATORE = :NEW.NOME_SVILUPPATORE;
-
-    IF :NEW.DATA_RILASCIO <= v_data_fondazione_editore OR :NEW.DATA_RILASCIO <= v_data_fondazione_sviluppatore THEN
-        RAISE_APPLICATION_ERROR(-20010, 'La data di rilascio del gioco deve essere successiva alle date di fondazione dell''editore e dello sviluppatore.');
+    
+    -- Recupera la data di fondazione dell'editore
+    SELECT DATA_FONDAZIONE_EDITORE INTO v_data_editore
+    FROM EDITORE
+    WHERE NOME_EDITORE = :NEW.NOME_EDITORE;
+    
+    -- Controlla che la data di rilascio sia successiva alle date di sviluppatore ed editore
+    IF :NEW.DATA_RILASCIO <= v_data_sviluppatore OR :NEW.DATA_RILASCIO <= v_data_editore THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La data di rilascio deve essere successiva alla data di fondazione dello sviluppatore e dell''editore.');
     END IF;
 END;
 
