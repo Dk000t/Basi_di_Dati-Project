@@ -296,30 +296,6 @@ EXCEPTION
         NULL;
 END;
 
---Controllo che data key_gioco sia maggiore di data iscrizione e data rilascio gioco
-CREATE OR REPLACE TRIGGER check_data_scadenza
-BEFORE INSERT ON KEY_GIOCO
-FOR EACH ROW
-DECLARE
-    utente_iscrizione DATE;
-    gioco_data_rilascio DATE;
-BEGIN
-    SELECT DATA_ISCRIZIONE INTO utente_iscrizione
-    FROM UTENTE
-    WHERE USERNAME = :NEW.USERNAME;
-
-    SELECT DATA_RILASCIO INTO gioco_data_rilascio
-    FROM GIOCO
-    WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
-
-    IF (:NEW.DATA_SCADENZA <= utente_iscrizione OR :NEW.DATA_SCADENZA <= gioco_data_rilascio) THEN
-        RAISE_APPLICATION_ERROR(-20001, 'La data di scadenza della chiave deve essere successiva alla data di iscrizione dell''utente e alla data di rilascio del gioco.');
-    END IF;
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        NULL; 
-END;
-
 --Controlla che data DLC sia dopo data_rilascio gioco (TESTATO FUNZIONANTE)
 CREATE OR REPLACE TRIGGER check_data_rilascio_dlc
 BEFORE INSERT ON DLC
