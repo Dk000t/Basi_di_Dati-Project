@@ -344,3 +344,24 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20001, 'La data di aggiornamento deve essere successiva alla data di rilascio del gioco.');
     END IF;
 END;
+
+--Controllo coerenza data inserimento gioco in lista desideri con data iscrizione utente e data rilascio del gioco (TESTATO FUNZIONA)
+CREATE OR REPLACE TRIGGER TRG_CONTROLLA_DATA_INSERIMENTO
+BEFORE INSERT ON AGGIUNGE_GIOCO_LISTA
+FOR EACH ROW
+DECLARE
+    v_data_iscrizione DATE;
+    v_data_rilascio_gioco DATE;
+BEGIN
+    SELECT DATA_ISCRIZIONE INTO v_data_iscrizione
+    FROM UTENTE
+    WHERE USERNAME = :NEW.USERNAME;
+
+    SELECT DATA_RILASCIO INTO v_data_rilascio_gioco
+    FROM GIOCO
+    WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
+    
+    IF :NEW.DATA_INSERIMENTO < v_data_iscrizione OR :NEW.DATA_INSERIMENTO < v_data_rilascio_gioco THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La data di inserimento deve essere successiva alla data di iscrizione dell''utente e al rilascio del gioco.');
+    END IF;
+END;
