@@ -1,3 +1,5 @@
+--Privilegi sistema utente.
+GRANT CONNECT, CREATE SESSION TO utente;
 --Privilegi utente.
 GRANT EXECUTE ON aggiungi_amico.proc TO utente;
 GRANT EXECUTE ON rimuovi_amico.proc TO utente;
