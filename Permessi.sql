@@ -1,1 +1,2 @@
+--Aggiunta amico.
 GRANT INSERT ON E_AMICO_DI TO example_user;
