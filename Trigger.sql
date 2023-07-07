@@ -181,24 +181,30 @@ BEGIN
 END;
 
 --Controllo coerenza inserimento gioco in lista desideri controllando che sia maggiore alla data di iscrizione e alla data di rilascio di gioco. (TESTATO FUNZIONA)
-CREATE OR REPLACE TRIGGER check_wishlist_insert
-BEFORE INSERT ON LISTA_DESIDERI
+CREATE OR REPLACE TRIGGER TRG_INSERIMENTO_GIOCO_LISTA
+BEFORE INSERT ON AGGIUNGE_GIOCO_LISTA
 FOR EACH ROW
 DECLARE
-    v_user_registration_date UTENTE.DATA_ISCRIZIONE%TYPE;
-    v_game_release_date GIOCO.DATA_RILASCIO%TYPE;
+    v_Data_Iscrizione UTENTE.DATA_ISCRIZIONE%TYPE;
+    v_Data_Rilascio GIOCO.DATA_RILASCIO%TYPE;
 BEGIN
-    SELECT DATA_ISCRIZIONE
-    INTO v_user_registration_date
-    FROM UTENTE
-    WHERE USERNAME = :NEW.USERNAME;
-    SELECT DATA_RILASCIO
-    INTO v_game_release_date
-    FROM GIOCO
-    WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
-    IF :NEW.DATA_INSERIMENTO < v_user_registration_date OR :NEW.DATA_INSERIMENTO < v_game_release_date THEN
-        RAISE_APPLICATION_ERROR(-20011, 'La data di inserimento deve essere successiva alla data di iscrizione dell''utente e alla data di rilascio del gioco.');
+    SELECT u.DATA_ISCRIZIONE
+    INTO v_Data_Iscrizione
+    FROM UTENTE u
+    INNER JOIN LISTA_DESIDERI ld ON ld.USERNAME = u.USERNAME
+    WHERE ld.ID_LISTA = :NEW.ID_LISTA;
+
+    SELECT g.DATA_RILASCIO
+    INTO v_Data_Rilascio
+    FROM GIOCO g
+    WHERE g.NOME_GIOCO = :NEW.NOME_GIOCO;
+
+    IF :NEW.DATA_INSERIMENTO <= v_Data_Iscrizione OR :NEW.DATA_INSERIMENTO <= v_Data_Rilascio THEN
+        RAISE_APPLICATION_ERROR(-20001, 'La data di inserimento deve essere successiva alla data di iscrizione dell''utente e alla data di rilascio del gioco.');
     END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20002, 'L''utente o il gioco associati non esistono.');
 END;
 
 --Controllo coerenza data ottenimento collezionabile con data iscrizione utente e data pagamento gioco.
