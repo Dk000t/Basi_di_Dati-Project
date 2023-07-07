@@ -1,23 +1,31 @@
-GRANT INSERT,DELETE ON E_AMICO_DI TO utente;
-
-GRANT INSERT,UPDATE,DELETE ON COMMUNITY TO utente;
-GRANT INSERT ON SEGUE TO utente;
-
-GRANT INSERT,UPDATE,DELETE ON POST TO utente;
-
-GRANT INSERT,DELETE ON RECENSIONE TO utente;
-
-GRANT INSERT,DELETE ON LISTA_DESIDERI TO utente;
-
-GRANT INSERT,DELETE ON GRUPPO TO utente;
-
-GRANT INSERT,DELETE FA_PARTE TO utente;
-
-GRANT INSERT,UPDATE,DELETE GIOCO TO editore;
-
-GRANT INSERT,UPDATE,DELETE DLC TO editore;
-
-GRANT INSERT,UPDATE,DELETE AGGIORNAMENTO TO sviluppatore;
+--Privilegi utente.
+GRANT EXECUTE ON aggiungi_amico.proc TO utente;
+GRANT EXECUTE ON rimuovi_amico.proc TO utente;
+GRANT EXECUTE ON crea_community.proc TO utente;
+GRANT EXECUTE ON elimina_community.proc TO utente;
+GRANT EXECUTE ON modifica_stato_community.proc TO utente;
+GRANT EXECUTE ON segue_community.proc TO utente;
+GRANT EXECUTE ON crea_post.proc TO utente;
+GRANT EXECUTE ON elimina_post.proc TO utente;
+GRANT EXECUTE ON modifica_stato_post.proc TO utente;
+GRANT EXECUTE ON ins_recensione.proc TO utente;
+GRANT EXECUTE ON del_recensione.proc TO utente;
+GRANT EXECUTE ON ins_gioco_lista.proc TO utente;
+GRANT EXECUTE ON del_gioco_lista.proc TO utente;
+GRANT EXECUTE ON crea_gruppo.proc TO utente;
+GRANT EXECUTE ON elimina_gruppo.proc TO utente;
+GRANT EXECUTE ON follow_community.proc TO utente;
+GRANT EXECUTE ON unfollow_community.proc TO utente;
+--Privilegi editore.
+GRANT EXECUTE ON ins_gioco.proc TO editore;
+GRANT EXECUTE ON del_gioco.proc TO editore;
+GRANT EXECUTE ON prezzo_gioco.proc TO editore;
+GRANT EXECUTE ON ins_dlc.proc TO editore;
+GRANT EXECUTE ON del_dlc.proc TO editore;
+GRANT EXECUTE ON prezzo_dlc.proc TO editore;
+--Privilegi sviluppatore.
+GRANT EXECUTE ON ins_aggiornamento.proc TO sviluppatore;
+GRANT EXECUTE ON del_aggiornamento.proc TO sviluppatore;
 
 
 
