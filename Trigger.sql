@@ -10,7 +10,7 @@ BEGIN
     END IF;
 END;
 
---Controlla che un utente possa seguire una community solo se il suo stato non e' 'Privata'.
+--Controlla che un utente possa seguire una community solo se il suo stato non e' 'Privata'. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER trg_segui_community
 BEFORE INSERT ON SEGUE
 FOR EACH ROW
