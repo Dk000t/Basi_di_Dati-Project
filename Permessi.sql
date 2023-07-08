@@ -5,12 +5,15 @@ GRANT admin to admin_user
 -- Creazione dell'Editore.
 CREATE USER editore_user IDENTIFIED BY password;
 CREATE ROLE editore;
+GRANT editore to editore_user
 -- Creazione dello Sviluppatore.
 CREATE USER sviluppatore_user IDENTIFIED BY password;
 CREATE ROLE sviluppatore;
+GRANT sviluppatore to sviluppatore_user
 -- Creazione dell'Utente.
 CREATE USER utente IDENTIFIED BY password;
-CREATE ROLE utente;
+CREATE ROLE standard_uuser;
+GRANT user to standard_utente
 
 --Privilegi sistema admin.
 GRANT CONNECT, CREATE SESSION TO admin;
