@@ -1,2 +1,2 @@
 # BD-Project
-Steam X Reddit - database for BD exam.
+Steam - database for BD exam.
