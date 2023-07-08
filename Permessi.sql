@@ -1,10 +1,14 @@
 -- Creazione dell'Admin.
+CREATE USER admin IDENTIFIED BY password;
 CREATE ROLE admin;
 -- Creazione dell'Editore.
+CREATE USER editore IDENTIFIED BY password;
 CREATE ROLE editore;
 -- Creazione dello Sviluppatore.
+CREATE USER sviluppatore IDENTIFIED BY password;
 CREATE ROLE sviluppatore;
 -- Creazione dell'Utente.
+CREATE USER utente IDENTIFIED BY password;
 CREATE ROLE utente;
 
 --Privilegi sistema admin.
