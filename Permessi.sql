@@ -45,6 +45,22 @@ GRANT EXECUTE ON crea_gruppo TO utente;
 GRANT EXECUTE ON elimina_gruppo TO utente;
 GRANT EXECUTE ON follow_community TO utente;
 GRANT EXECUTE ON unfollow_community TO utente;
+
+GRANT SELECT ON UTENTE TO utente;
+GRANT SELECT ON COMMUNITY TO utente;
+GRANT SELECT ON POST TO utente;
+GRANT SELECT ON GRUPPO TO utente;
+GRANT SELECT ON E_AMICO_DI TO utente;
+GRANT SELECT ON SEGUE TO utente;
+GRANT SELECT ON FA_PARTE TO utente;
+GRANT SELECT ON CASA_SVILUPPATRICE TO utente;
+GRANT SELECT ON EDITORE TO utente;
+GRANT SELECT ON GIOCO TO utente;
+GRANT SELECT ON DLC TO utente;
+GRANT SELECT ON RECENSIONE TO utente;
+GRANT SELECT ON OBIETTIVO TO utente;
+GRANT SELECT ON COLLEZIONABILE TO utente;
+
 --Privilegi editore.
 GRANT EXECUTE ON ins_gioco TO editore;
 GRANT EXECUTE ON del_gioco TO editore;
@@ -52,6 +68,15 @@ GRANT EXECUTE ON prezzo_gioco TO editore;
 GRANT EXECUTE ON ins_dlc TO editore;
 GRANT EXECUTE ON del_dlc TO editore;
 GRANT EXECUTE ON prezzo_dlc TO editore;
+
+GRANT SELECT ON GIOCO to editore;
+GRANT SELECT ON DLC to editore;
+
 --Privilegi sviluppatore.
 GRANT EXECUTE ON ins_aggiornamento TO sviluppatore;
 GRANT EXECUTE ON del_aggiornamento TO sviluppatore;
+
+
+GRANT SELECT ON GIOCO to sviluppatore;
+GRANT SELECT ON DLC to sviluppatore;
+GRANT SELECT ON AGGIORNAMENTO to sviluppatore;
