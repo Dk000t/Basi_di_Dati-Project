@@ -1,5 +1,21 @@
+-- Creazione dell'Admin.
+CREATE USER admin IDENTIFIED BY password;
+-- Creazione dell'Editore.
+CREATE USER editore IDENTIFIED BY password;
+-- Creazione dello Sviluppatore.
+CREATE USER sviluppatore IDENTIFIED BY password;
+-- Creazione dell'Utente.
+CREATE USER utente IDENTIFIED BY password;
+
+--Privilegi sistema admin.
+GRANT CREATE SESSION TO admin;
+--Privilegi sistema editore.
+GRANT CREATE SESSION TO editore;
+--Privilegi sistema sviluppatore.
+GRANT CREATE SESSION TO sviluppatore;
 --Privilegi sistema utente.
 GRANT CONNECT, CREATE SESSION TO utente;
+
 --Privilegi utente.
 GRANT EXECUTE ON aggiungi_amico TO utente;
 GRANT EXECUTE ON rimuovi_amico TO utente;
@@ -28,14 +44,3 @@ GRANT EXECUTE ON prezzo_dlc TO editore;
 --Privilegi sviluppatore.
 GRANT EXECUTE ON ins_aggiornamento TO sviluppatore;
 GRANT EXECUTE ON del_aggiornamento TO sviluppatore;
-
-
-
-
-
-
-
-
-
-
-
