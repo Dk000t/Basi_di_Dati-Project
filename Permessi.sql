@@ -13,6 +13,13 @@ GRANT CREATE SESSION TO admin;
 GRANT CREATE SESSION TO editore;
 --Privilegi sistema sviluppatore.
 GRANT CREATE SESSION TO sviluppatore;
+
+--Privilegi sistema admin.
+GRANT CONNECT, CREATE SESSION TO admin;
+--Privilegi sistema editore.
+GRANT CONNECT, CREATE SESSION TO editore;
+--Privilegi sistema sviluppatore.
+GRANT CONNECT, CREATE SESSION TO sviluppatore;
 --Privilegi sistema utente.
 GRANT CONNECT, CREATE SESSION TO utente;
 
