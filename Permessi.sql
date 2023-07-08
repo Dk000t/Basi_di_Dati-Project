@@ -1,11 +1,12 @@
 -- Creazione dell'Admin.
-CREATE USER admin IDENTIFIED BY password;
+CREATE USER admin_user IDENTIFIED BY password;
 CREATE ROLE admin;
+GRANT admin to admin_user
 -- Creazione dell'Editore.
-CREATE USER editore IDENTIFIED BY password;
+CREATE USER editore_user IDENTIFIED BY password;
 CREATE ROLE editore;
 -- Creazione dello Sviluppatore.
-CREATE USER sviluppatore IDENTIFIED BY password;
+CREATE USER sviluppatore_user IDENTIFIED BY password;
 CREATE ROLE sviluppatore;
 -- Creazione dell'Utente.
 CREATE USER utente IDENTIFIED BY password;
