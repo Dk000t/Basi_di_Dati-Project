@@ -79,4 +79,3 @@ GRANT EXECUTE ON del_aggiornamento TO sviluppatore;
 
 GRANT SELECT ON GIOCO to sviluppatore;
 GRANT SELECT ON DLC to sviluppatore;
-GRANT SELECT ON AGGIORNAMENTO to sviluppatore;
