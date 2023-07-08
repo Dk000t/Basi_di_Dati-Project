@@ -1,4 +1,4 @@
---CREARE TRIGGER IN CUI CONTROLLA CHE IL VOTO SIA MAX 10. (TESTATO FUNZIONA)
+--CONTROLLA CHE IL VOTO DI UNA RECENSIONE SIA MAX 10. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER controllo_voto_max
 BEFORE INSERT OR UPDATE ON RECENSIONE
 FOR EACH ROW
@@ -8,6 +8,40 @@ BEGIN
     IF :NEW.VOTO > voto_max THEN
         RAISE_APPLICATION_ERROR(-20001, 'Il voto massimo consentito è 10.');
     END IF;
+END;
+
+--Controlla che un utente possa seguire una community solo se il suo stato non e' 'Privata'.
+CREATE OR REPLACE TRIGGER trg_segui_community
+BEFORE INSERT ON SEGUE
+FOR EACH ROW
+DECLARE
+  stato_community VARCHAR2(10);
+BEGIN
+  -- Recupera lo stato della community
+  SELECT STATO_COMMUNITY INTO stato_community
+  FROM COMMUNITY
+  WHERE NOME_COMMUNITY = :NEW.NOME_COMMUNITY;
+  
+  -- Controlla se lo stato della community è 'PUBBLICA'
+  IF stato_community != 'PUBBLICA' THEN
+    -- Genera un errore se lo stato non è 'PUBBLICA'
+    RAISE_APPLICATION_ERROR(-20001, 'Non è consentito seguire una community con stato diverso da "PUBBLICA".');
+  END IF;
+END;
+
+--Trigger data creazione utente(non deve essere superiore della data attuale). (TESTATO FUNZIONA)
+CREATE OR REPLACE TRIGGER checkDateUser
+BEFORE INSERT ON UTENTE 
+FOR EACH ROW 
+DECLARE
+    wrongDateUser   EXCEPTION;
+BEGIN
+    IF :NEW.DATA_ISCRIZIONE > SYSDATE THEN
+        RAISE wrongDateUser;
+    END IF;
+EXCEPTION
+    WHEN wrongDateUser THEN
+        RAISE_APPLICATION_ERROR(-20000, 'La data non e''corretta');
 END;
 
 --Controllo se l'eta' e' maggiore uguale di 14. (TESTATO FUNZIONA)
@@ -319,21 +353,6 @@ BEGIN
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         NULL; 
-END;
-
---Trigger data creazione utente(non deve essere superiore della data attuale). (TESTATO FUNZIONA)
-CREATE OR REPLACE TRIGGER checkDateUser
-BEFORE INSERT ON UTENTE 
-FOR EACH ROW 
-DECLARE
-    wrongDateUser   EXCEPTION;
-BEGIN
-    IF :NEW.DATA_ISCRIZIONE > SYSDATE THEN
-        RAISE wrongDateUser;
-    END IF;
-EXCEPTION
-    WHEN wrongDateUser THEN
-        RAISE_APPLICATION_ERROR(-20000, 'La data non e''corretta');
 END;
 
 --Controllo coerenza data rilascio aggiornamento con data rilascio gioco (TESTATO FUNZIONA)
