@@ -11,9 +11,9 @@ CREATE USER sviluppatore_user IDENTIFIED BY password;
 CREATE ROLE sviluppatore;
 GRANT sviluppatore to sviluppatore_user
 -- Creazione dell'Utente.
-CREATE USER utente IDENTIFIED BY password;
-CREATE ROLE standard_uuser;
-GRANT user to standard_utente
+CREATE USER standard_user IDENTIFIED BY password;
+CREATE ROLE utente;
+GRANT utente to standard_user
 
 --Privilegi sistema admin.
 GRANT CONNECT, CREATE SESSION TO admin;
