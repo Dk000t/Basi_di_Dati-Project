@@ -28,7 +28,7 @@ GRANT CONNECT, CREATE SESSION TO utente;
 GRANT ALL PRIVILEGES TO admin;
 
 --Privilegi utente.
-GRANT EXECUTE ON aggiungi_amico TO utente;
+GRANT EXECUTE ON aggiunge_amico TO utente;
 GRANT EXECUTE ON rimuovi_amico TO utente;
 GRANT EXECUTE ON crea_community TO utente;
 GRANT EXECUTE ON elimina_community TO utente;
