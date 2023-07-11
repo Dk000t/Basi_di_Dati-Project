@@ -105,18 +105,7 @@ BEGIN
 END;
 
 --Controllo che un utente non possa essere amico di se stesso. (TESTATO FUNZIONA)
-CREATE OR REPLACE TRIGGER CHECK_DATA_ISCRIZIONE
-BEFORE INSERT ON UTENTE
-FOR EACH ROW
-DECLARE
-    anni_diff NUMBER;
-BEGIN
-    anni_diff := EXTRACT(YEAR FROM :NEW.DATA_ISCRIZIONE) - EXTRACT(YEAR FROM :NEW.DATA_NASCITA);
-    IF anni_diff < 14 THEN
-        RAISE_APPLICATION_ERROR(-20005, 'L''utente deve avere almeno 14 anni per iscriversi.');
-    END IF;
-END;
-/
+
 
 
 --Controllo coerenza data di amicizia / data iscrizione utente. (TESTATO FUNZIONA)
