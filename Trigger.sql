@@ -105,8 +105,14 @@ BEGIN
 END;
 
 --Controllo che un utente non possa essere amico di se stesso. (TESTATO FUNZIONA)
-
-
+CREATE OR REPLACE TRIGGER TRG_CONTROLLA_AMICIZIA
+BEFORE INSERT OR UPDATE ON E_AMICO_DI
+FOR EACH ROW 
+BEGIN
+    IF (:NEW.USERNAME_1 = :NEW.USERNAME_2) THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Un utente non può essere amico di se stesso.');
+    END IF;
+END;
 
 --Controllo coerenza data di amicizia / data iscrizione utente. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_DATA_AMICIZIA
