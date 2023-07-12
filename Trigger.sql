@@ -9,7 +9,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20001, 'Il voto massimo consentito è 10.');
     END IF;
 END;
-
+/
 --Controlla che un utente possa seguire una community solo se il suo stato non e' 'Privata'. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER trg_segui_community
 BEFORE INSERT ON SEGUE
@@ -25,7 +25,7 @@ BEGIN
     RAISE_APPLICATION_ERROR(-20001, 'Non è consentito seguire una community con stato diverso da "PUBBLICA".');
   END IF;
 END;
-
+/
 --Trigger data creazione utente(non deve essere superiore della data attuale). (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER checkDateUser
 BEFORE INSERT ON UTENTE 
@@ -40,7 +40,7 @@ EXCEPTION
     WHEN wrongDateUser THEN
         RAISE_APPLICATION_ERROR(-20000, 'La data non e''corretta');
 END;
-
+/
 --Controllo se l'eta' e' maggiore uguale di 14. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_DATA_ISCRIZIONE
 BEFORE INSERT ON UTENTE
@@ -53,7 +53,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20001, 'L''utente deve avere almeno 14 anni per iscriversi.');
     END IF;
 END;
-
+/
 --Controllo coerenza data creazione community / data iscrizione utente. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER controllo_data_creazione_community
 BEFORE INSERT ON COMMUNITY
@@ -68,7 +68,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20002, 'La data di creazione della community deve essere successiva alla data di iscrizione dell''utente.');
     END IF;
 END;
-
+/
 --Controllo coerenza data pubblicazione post / data creazione community. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_DATA_PUBBLICAZIONE
 BEFORE INSERT ON POST
@@ -84,7 +84,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20003, 'La data di pubblicazione deve essere successiva alla data di creazione della community.');
     END IF;
 END;
-
+/
 --Controllo coerenza data creazione gruppo / data iscrizione utente. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_DATA_CREAZIONE
 BEFORE INSERT ON GRUPPO
@@ -100,7 +100,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20004, 'La data di creazione del gruppo deve essere successiva alla data di iscrizione dell''utente.');
     END IF;
 END;
-
+/
 --Controllo che un utente non possa essere amico di se stesso. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER TRG_CONTROLLA_AMICIZIA
 BEFORE INSERT OR UPDATE ON E_AMICO_DI
@@ -110,7 +110,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20001, 'Un utente non può essere amico di se stesso.');
     END IF;
 END;
-
+/
 --Controllo coerenza data di amicizia / data iscrizione utente. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_DATA_AMICIZIA
 BEFORE INSERT ON E_AMICO_DI
@@ -131,7 +131,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20006, 'La data di inizio amicizia deve essere successiva o uguale alle date di iscrizione degli utenti.');
     END IF;
 END;
-
+/
 --Controllo duplicazione amicizia. (Se esiste l'associazione inversa) (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_AMICIZIA_DUPLICATA
 BEFORE INSERT ON E_AMICO_DI
@@ -147,7 +147,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20007, 'La relazione di amicizia inversa esiste già.');
     END IF;
 END;
-
+/
 --Controllo coerenza data segue ed iscrizione utente. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_DATA_SEGUE 
 BEFORE INSERT ON SEGUE
@@ -163,7 +163,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20008, 'La data di segue deve essere successiva o uguale alla data di iscrizione dell''utente.');
     END IF;
 END;
-
+/
 --Controllo coerenza data adesione gruppo e data iscrizione utente e data creazione gruppo. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER CHECK_ADESIONE_GRUPPO
 BEFORE INSERT ON FA_PARTE
@@ -186,7 +186,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20009, 'La data di adesione al gruppo deve essere successiva sia alla data di iscrizione dell''utente che alla data di creazione del gruppo.');
     END IF;
 END;
-
+/
 -- Controllo coerenza data pubblicazione gioco con editore e sviluppatore. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER TRG_CONTROLLA_DATA_RILASCIO
 BEFORE INSERT ON GIOCO
@@ -205,7 +205,7 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20010, 'La data di rilascio deve essere successiva alla data di fondazione dello sviluppatore e dell''editore.');
     END IF;
 END;
-
+/
 --Controllo coerenza inserimento gioco in lista desideri controllando che sia maggiore alla data di iscrizione e alla data di rilascio di gioco. (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER TRG_INSERIMENTO_GIOCO_LISTA
 BEFORE INSERT ON AGGIUNGE_GIOCO_LISTA
@@ -232,7 +232,7 @@ EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20002, 'L''utente o il gioco associati non esistono.');
 END;
-
+/
 --Controlla che data DLC sia dopo data_rilascio gioco (TESTATO FUNZIONANTE)
 CREATE OR REPLACE TRIGGER check_data_rilascio_dlc
 BEFORE INSERT ON DLC
@@ -251,7 +251,7 @@ EXCEPTION
     WHEN NO_DATA_FOUND THEN
         NULL; 
 END;
-
+/
 --Controllo coerenza data rilascio aggiornamento con data rilascio gioco (TESTATO FUNZIONA)
 CREATE OR REPLACE TRIGGER TRG_CONTROLLA_DATA_AGGIORNAMENTO
 BEFORE INSERT ON AGGIORNAMENTO
