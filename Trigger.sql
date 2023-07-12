@@ -266,3 +266,4 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20001, 'La data di aggiornamento deve essere successiva alla data di rilascio del gioco.');
     END IF;
 END;
+/
