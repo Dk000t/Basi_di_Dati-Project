@@ -239,7 +239,7 @@ BEGIN
     FROM GIOCO g
     WHERE g.NOME_GIOCO = :NEW.NOME_GIOCO;
 
-    IF :NEW.DATA_INSERIMENTO <= v_Data_Iscrizione OR :NEW.DATA_INSERIMENTO <= v_Data_Rilascio THEN
+    IF :NEW.DATA_INSERIMENTO < v_Data_Iscrizione OR :NEW.DATA_INSERIMENTO < v_Data_Rilascio THEN
         RAISE_APPLICATION_ERROR(-20001, 'La data di inserimento deve essere successiva alla data di iscrizione dell''utente e alla data di rilascio del gioco.');
     END IF;
 EXCEPTION
