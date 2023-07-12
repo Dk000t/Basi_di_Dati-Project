@@ -17,14 +17,11 @@ FOR EACH ROW
 DECLARE
   stato_community VARCHAR2(10);
 BEGIN
-  -- Recupera lo stato della community
   SELECT STATO_COMMUNITY INTO stato_community
   FROM COMMUNITY
   WHERE NOME_COMMUNITY = :NEW.NOME_COMMUNITY;
   
-  -- Controlla se lo stato della community è 'PUBBLICA'
   IF stato_community != 'PUBBLICA' THEN
-    -- Genera un errore se lo stato non è 'PUBBLICA'
     RAISE_APPLICATION_ERROR(-20001, 'Non è consentito seguire una community con stato diverso da "PUBBLICA".');
   END IF;
 END;
