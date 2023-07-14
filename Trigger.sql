@@ -196,7 +196,7 @@ BEGIN
     FROM GRUPPO
     WHERE NOME_GRUPPO = :NEW.NOME_GRUPPO;
 
-    IF :NEW.DATA_ADESIONE <= v_data_iscrizione OR :NEW.DATA_ADESIONE <= v_data_creazione THEN
+    IF :NEW.DATA_ADESIONE < v_data_iscrizione OR :NEW.DATA_ADESIONE < v_data_creazione THEN
         RAISE_APPLICATION_ERROR(-20009, 'La data di adesione al gruppo deve essere successiva sia alla data di iscrizione dell''utente che alla data di creazione del gruppo.');
     END IF;
 END;
@@ -215,7 +215,7 @@ BEGIN
     SELECT DATA_FONDAZIONE_EDITORE INTO v_data_editore
     FROM EDITORE
     WHERE NOME_EDITORE = :NEW.NOME_EDITORE;
-    IF :NEW.DATA_RILASCIO <= v_data_sviluppatore OR :NEW.DATA_RILASCIO <= v_data_editore THEN
+    IF :NEW.DATA_RILASCIO < v_data_sviluppatore OR :NEW.DATA_RILASCIO < v_data_editore THEN
         RAISE_APPLICATION_ERROR(-20010, 'La data di rilascio deve essere successiva alla data di fondazione dello sviluppatore e dell''editore.');
     END IF;
 END;
@@ -276,7 +276,7 @@ BEGIN
     SELECT DATA_RILASCIO INTO v_data_rilascio_gioco
     FROM GIOCO
     WHERE NOME_GIOCO = :NEW.NOME_GIOCO;
-    IF :NEW.DATA_RILASCIO <= v_data_rilascio_gioco THEN
+    IF :NEW.DATA_RILASCIO < v_data_rilascio_gioco THEN
         RAISE_APPLICATION_ERROR(-20001, 'La data di aggiornamento deve essere successiva alla data di rilascio del gioco.');
     END IF;
 END;
