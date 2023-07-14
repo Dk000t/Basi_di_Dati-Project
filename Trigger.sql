@@ -104,7 +104,7 @@ BEGIN
     WHERE NOME_GRUPPO = :NEW.NOME_GRUPPO;
 
     IF v_data_iscrizione IS NOT NULL AND v_data_creazione IS NOT NULL THEN
-        IF :NEW.DATA_ADESIONE <= v_data_iscrizione OR :NEW.DATA_ADESIONE <= v_data_creazione THEN
+        IF :NEW.DATA_ADESIONE < v_data_iscrizione OR :NEW.DATA_ADESIONE < v_data_creazione THEN
             RAISE_APPLICATION_ERROR(-20009, 'La data di adesione al gruppo deve essere successiva sia alla data di iscrizione dell''utente che alla data di creazione del gruppo.');
         END IF;
     ELSE
