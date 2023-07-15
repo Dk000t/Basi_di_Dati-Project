@@ -1,1 +1,0 @@
--- L'utente si puo' disiscriversi dalla piattaforma solo il giorno dopo in cui si e' iscritto.
