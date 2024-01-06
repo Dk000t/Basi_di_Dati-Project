@@ -1,2 +1,2 @@
 # BD-Project
-Steam - database for BD exam.
+Steam-like database for BD exam.
